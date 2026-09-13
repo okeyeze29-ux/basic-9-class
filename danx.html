@@ -1,0 +1,1547 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basic 9 Learning Academy</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #222;
+}
+
+header {
+    background: #5b321a;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 30px;
+}
+
+header p {
+    margin-top: 8px;
+}
+
+.container {
+    display: flex;
+    min-height: calc(100vh - 120px);
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 260px;
+    background: #222;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-bottom: 15px;
+}
+
+.subject {
+    padding: 12px;
+    margin: 7px 0;
+    background: #333;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.subject:hover {
+    background: #5b321a;
+}
+
+/* MAIN */
+
+.main {
+    flex: 1;
+    padding: 25px;
+}
+
+.search {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.welcome {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #ccc;
+}
+
+.lesson {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #ccc;
+}
+
+.lesson h2 {
+    color: #5b321a;
+    margin-bottom: 15px;
+}
+
+.lesson h3 {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.lesson p {
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.lesson ul {
+    margin-left: 25px;
+    line-height: 1.8;
+}
+
+.example {
+    background: #fff4df;
+    border-left: 5px solid #5b321a;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+.quiz {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #ddd;
+}
+
+.question {
+    margin-bottom: 25px;
+}
+
+.option {
+    display: block;
+    padding: 10px;
+    margin: 7px 0;
+    background: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #ddd;
+}
+
+button {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    background: #5b321a;
+    color: white;
+    cursor: pointer;
+    margin: 5px;
+}
+
+button:hover {
+    background: #7a4727;
+}
+
+.navigation {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.progress {
+    margin: 20px 0;
+    background: #ddd;
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: green;
+}
+
+.score {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+@media(max-width: 800px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .main {
+        padding: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>📚 BASIC 9 LEARNING ACADEMY</h1>
+    <p>Learn • Practise • Test Yourself • Improve</p>
+</header>
+
+<div class="container">
+
+    <aside class="sidebar">
+
+        <h2>Subjects</h2>
+
+        <div id="subjects"></div>
+
+    </aside>
+
+    <main class="main">
+
+        <input
+            type="text"
+            class="search"
+            id="search"
+            placeholder="Search for a subject or topic..."
+        >
+
+        <div id="content">
+
+            <div class="welcome">
+
+                <h2>Welcome to Basic 9 Learning Academy</h2>
+
+                <br>
+
+                <p>
+                    This website is an interactive learning platform for
+                    Basic 9 students following the Nigerian curriculum.
+                </p>
+
+                <br>
+
+                <h3>How to use this website</h3>
+
+                <ol>
+                    <li>Select a subject.</li>
+                    <li>Select a topic.</li>
+                    <li>Read the lesson carefully.</li>
+                    <li>Study the examples.</li>
+                    <li>Answer the quiz.</li>
+                    <li>Check your score.</li>
+                    <li>Move to the next topic.</li>
+                </ol>
+
+                <br>
+
+                <p>
+                    Your progress is automatically saved in your browser.
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   BASIC 9 CURRICULUM DATABASE
+========================================================= */
+
+const curriculum = {
+
+"Mathematics": [
+
+{
+title: "Number Bases",
+lesson: `
+<h3>What are Number Bases?</h3>
+
+<p>
+A number base is a system used to represent numbers.
+The decimal system uses base 10, while binary uses base 2.
+</p>
+
+<h3>Binary Numbers</h3>
+
+<p>
+Binary uses only two digits: 0 and 1.
+</p>
+
+<div class="example">
+Example:<br>
+1011₂ = 1×2³ + 0×2² + 1×2¹ + 1×2⁰<br>
+= 8 + 0 + 2 + 1<br>
+= 11₁₀
+</div>
+`,
+questions: [
+["What base does the decimal system use?", ["2","8","10","16"], "10"],
+["Which digits are used in binary?", ["0 and 1","1 and 2","2 and 3","0 and 2"], "0 and 1"]
+]
+},
+
+{
+title: "Algebra",
+lesson: `
+<h3>Introduction to Algebra</h3>
+
+<p>
+Algebra uses letters to represent unknown numbers.
+</p>
+
+<div class="example">
+Example:<br>
+x + 5 = 12<br>
+x = 12 - 5<br>
+x = 7
+</div>
+
+<h3>Like Terms</h3>
+
+<p>
+Like terms contain the same variables raised to the same powers.
+</p>
+
+<div class="example">
+3x + 5x = 8x
+</div>
+`,
+questions: [
+["Solve x + 5 = 12", ["5","6","7","8"], "7"],
+["Simplify 3x + 5x", ["8","8x","15x","2x"], "8x"]
+]
+},
+
+{
+title: "Quadratic Equations",
+lesson: `
+<h3>Quadratic Equations</h3>
+
+<p>
+A quadratic equation generally has the form:
+</p>
+
+<div class="example">
+ax² + bx + c = 0
+</div>
+
+<p>
+Quadratic equations can be solved by factorisation,
+completing the square, or the quadratic formula.
+</p>
+
+<div class="example">
+Example:<br>
+x² - 5x + 6 = 0<br>
+(x - 2)(x - 3) = 0<br>
+Therefore x = 2 or x = 3.
+</div>
+`,
+questions: [
+["What is the highest power in a quadratic equation?", ["1","2","3","4"], "2"],
+["Solve x² - 5x + 6 = 0", ["1 and 2","2 and 3","3 and 4","4 and 5"], "2 and 3"]
+]
+},
+
+{
+title: "Statistics",
+lesson: `
+<h3>Statistics</h3>
+
+<p>
+Statistics involves collecting, organising, analysing and interpreting data.
+</p>
+
+<h3>Mean</h3>
+
+<p>
+Mean = Sum of observations ÷ Number of observations.
+</p>
+
+<div class="example">
+Example:<br>
+Find the mean of 4, 6 and 8.<br><br>
+Mean = (4 + 6 + 8) ÷ 3<br>
+= 18 ÷ 3<br>
+= 6
+</div>
+`,
+questions: [
+["Find the mean of 4, 6 and 8.", ["4","5","6","7"], "6"]
+]
+}
+
+],
+
+
+"English Studies": [
+
+{
+title: "Parts of Speech",
+lesson: `
+<h3>Parts of Speech</h3>
+
+<p>
+Parts of speech describe the function of words in a sentence.
+</p>
+
+<ul>
+<li>Noun – names a person, place, animal or thing.</li>
+<li>Pronoun – replaces a noun.</li>
+<li>Verb – shows an action or state.</li>
+<li>Adjective – describes a noun.</li>
+<li>Adverb – describes a verb, adjective or another adverb.</li>
+<li>Preposition – shows relationship between words.</li>
+<li>Conjunction – joins words or sentences.</li>
+<li>Interjection – expresses emotion.</li>
+</ul>
+
+<div class="example">
+Example:<br>
+The clever boy ran quickly.<br><br>
+"boy" = noun<br>
+"clever" = adjective<br>
+"ran" = verb<br>
+"quickly" = adverb
+</div>
+`,
+questions: [
+["Which part of speech names a person, place or thing?", ["Verb","Noun","Adverb","Conjunction"], "Noun"],
+["Which word is an adjective?", ["run","beautiful","quickly","and"], "beautiful"]
+]
+},
+
+{
+title: "Comprehension",
+lesson: `
+<h3>Comprehension</h3>
+
+<p>
+Comprehension means understanding information contained in a passage.
+</p>
+
+<h3>How to answer comprehension questions</h3>
+
+<ul>
+<li>Read the passage carefully.</li>
+<li>Understand the main idea.</li>
+<li>Look for supporting details.</li>
+<li>Answer using information from the passage.</li>
+<li>Read your answer again before submitting.</li>
+</ul>
+`,
+questions: [
+["What does comprehension mean?", [
+"Memorising words",
+"Understanding a passage",
+"Writing numbers",
+"Drawing pictures"
+], "Understanding a passage"]
+]
+},
+
+{
+title: "Essay Writing",
+lesson: `
+<h3>Essay Writing</h3>
+
+<p>
+An essay is a piece of writing on a particular subject.
+</p>
+
+<h3>Basic structure</h3>
+
+<ul>
+<li>Introduction</li>
+<li>Body paragraphs</li>
+<li>Conclusion</li>
+</ul>
+
+<p>
+A good essay should have clear ideas, correct grammar,
+proper paragraphing and appropriate vocabulary.
+</p>
+`,
+questions: [
+["Which normally comes first in an essay?", [
+"Conclusion",
+"Introduction",
+"References",
+"Index"
+], "Introduction"]
+]
+}
+
+],
+
+
+"Basic Science": [
+
+{
+title: "The Human Reproductive System",
+lesson: `
+<h3>Reproduction</h3>
+
+<p>
+Reproduction is the biological process by which organisms produce
+new individuals of their kind.
+</p>
+
+<h3>Types of reproduction</h3>
+
+<ul>
+<li>Sexual reproduction</li>
+<li>Asexual reproduction</li>
+</ul>
+
+<p>
+In humans, reproduction involves male and female reproductive systems.
+</p>
+`,
+questions: [
+["What is reproduction?", [
+"Movement of food",
+"Production of new organisms",
+"Digestion",
+"Respiration"
+], "Production of new organisms"]
+]
+},
+
+{
+title: "Energy",
+lesson: `
+<h3>Energy</h3>
+
+<p>
+Energy is the ability to do work.
+</p>
+
+<h3>Forms of energy</h3>
+
+<ul>
+<li>Heat energy</li>
+<li>Light energy</li>
+<li>Sound energy</li>
+<li>Electrical energy</li>
+<li>Chemical energy</li>
+<li>Kinetic energy</li>
+<li>Potential energy</li>
+</ul>
+`,
+questions: [
+["What is energy?", [
+"The ability to do work",
+"A type of matter",
+"A chemical",
+"A living organism"
+], "The ability to do work"]
+]
+},
+
+{
+title: "Environmental Pollution",
+lesson: `
+<h3>Pollution</h3>
+
+<p>
+Pollution is the introduction of harmful substances into the environment.
+</p>
+
+<h3>Types</h3>
+
+<ul>
+<li>Air pollution</li>
+<li>Water pollution</li>
+<li>Land pollution</li>
+<li>Noise pollution</li>
+</ul>
+
+<h3>Prevention</h3>
+
+<ul>
+<li>Proper waste disposal</li>
+<li>Recycling</li>
+<li>Planting trees</li>
+<li>Reducing harmful emissions</li>
+</ul>
+`,
+questions: [
+["Which is a type of pollution?", [
+"Air pollution",
+"Food pollution",
+"Book pollution",
+"Cloth pollution"
+], "Air pollution"]
+]
+}
+
+],
+
+
+"Basic Technology": [
+
+{
+title: "Workshop Safety",
+lesson: `
+<h3>Workshop Safety</h3>
+
+<p>
+Workshop safety involves rules and practices that prevent accidents
+while using tools and equipment.
+</p>
+
+<ul>
+<li>Wear appropriate protective equipment.</li>
+<li>Keep tools properly arranged.</li>
+<li>Do not use damaged tools.</li>
+<li>Follow instructions.</li>
+<li>Keep the workshop clean.</li>
+</ul>
+`,
+questions: [
+["Why are workshop safety rules important?", [
+"To cause accidents",
+"To prevent accidents",
+"To waste time",
+"To damage tools"
+], "To prevent accidents"]
+]
+},
+
+{
+title: "Simple Machines",
+lesson: `
+<h3>Simple Machines</h3>
+
+<p>
+A simple machine makes work easier by changing the size or direction
+of a force.
+</p>
+
+<ul>
+<li>Lever</li>
+<li>Pulley</li>
+<li>Wheel and axle</li>
+<li>Inclined plane</li>
+<li>Screw</li>
+<li>Wedge</li>
+</ul>
+`,
+questions: [
+["Which is a simple machine?", [
+"Pulley",
+"Television",
+"Radio",
+"Battery"
+], "Pulley"]
+]
+}
+
+],
+
+
+"Computer Studies": [
+
+{
+title: "Computer Networks",
+lesson: `
+<h3>Computer Networks</h3>
+
+<p>
+A computer network is a group of computers and devices connected
+together to communicate and share resources.
+</p>
+
+<h3>Types</h3>
+
+<ul>
+<li>LAN – Local Area Network</li>
+<li>MAN – Metropolitan Area Network</li>
+<li>WAN – Wide Area Network</li>
+</ul>
+`,
+questions: [
+["What does LAN mean?", [
+"Large Area Network",
+"Local Area Network",
+"Long Area Network",
+"Linked Access Network"
+], "Local Area Network"]
+]
+},
+
+{
+title: "Internet",
+lesson: `
+<h3>The Internet</h3>
+
+<p>
+The Internet is a worldwide network of interconnected computers
+and devices.
+</p>
+
+<h3>Uses</h3>
+
+<ul>
+<li>Communication</li>
+<li>Research</li>
+<li>Education</li>
+<li>Entertainment</li>
+<li>Online services</li>
+</ul>
+
+<h3>Internet Safety</h3>
+
+<p>
+Never share passwords or sensitive personal information with strangers.
+Use strong passwords and be careful with suspicious links.
+</p>
+`,
+questions: [
+["What is the Internet?", [
+"A single computer",
+"A worldwide network",
+"A keyboard",
+"A printer"
+], "A worldwide network"]
+]
+},
+
+{
+title: "Programming Basics",
+lesson: `
+<h3>Programming</h3>
+
+<p>
+Programming is the process of creating instructions that tell a
+computer what to do.
+</p>
+
+<h3>Basic programming concepts</h3>
+
+<ul>
+<li>Variables</li>
+<li>Conditions</li>
+<li>Loops</li>
+<li>Functions</li>
+<li>Algorithms</li>
+</ul>
+`,
+questions: [
+["What is programming?", [
+"Repairing a chair",
+"Writing instructions for a computer",
+"Drawing on paper",
+"Cleaning a computer"
+], "Writing instructions for a computer"]
+]
+}
+
+],
+
+
+"Social Studies": [
+
+{
+title: "Family",
+lesson: `
+<h3>The Family</h3>
+
+<p>
+A family is a group of people related by blood, marriage or adoption.
+</p>
+
+<h3>Functions of the family</h3>
+
+<ul>
+<li>Care of children</li>
+<li>Socialisation</li>
+<li>Provision of basic needs</li>
+<li>Protection</li>
+<li>Education</li>
+</ul>
+`,
+questions: [
+["Which is a function of the family?", [
+"Protection",
+"Pollution",
+"Deforestation",
+"Traffic"
+], "Protection"]
+]
+},
+
+{
+title: "Culture",
+lesson: `
+<h3>Culture</h3>
+
+<p>
+Culture is the total way of life of a people.
+</p>
+
+<p>
+It includes language, food, clothing, beliefs, customs,
+music and traditions.
+</p>
+`,
+questions: [
+["Culture can include:", [
+"Language",
+"Only money",
+"Only buildings",
+"Only vehicles"
+], "Language"]
+]
+}
+
+],
+
+
+"Civic Education": [
+
+{
+title: "Human Rights",
+lesson: `
+<h3>Human Rights</h3>
+
+<p>
+Human rights are basic rights and freedoms that belong to every human being.
+</p>
+
+<p>
+Examples include the right to life, dignity, education and freedom of expression,
+subject to lawful limitations.
+</p>
+`,
+questions: [
+["Human rights are:", [
+"Basic rights and freedoms",
+"Only political positions",
+"Business profits",
+"School subjects"
+], "Basic rights and freedoms"]
+]
+},
+
+{
+title: "Responsibilities of Citizens",
+lesson: `
+<h3>Citizenship Responsibilities</h3>
+
+<ul>
+<li>Obeying laws</li>
+<li>Paying lawful taxes</li>
+<li>Respecting other people</li>
+<li>Protecting public property</li>
+<li>Participating responsibly in society</li>
+</ul>
+`,
+questions: [
+["Which is a responsibility of a citizen?", [
+"Breaking laws",
+"Obeying laws",
+"Destroying property",
+"Refusing all duties"
+], "Obeying laws"]
+]
+}
+
+],
+
+
+"Business Studies": [
+
+{
+title: "Entrepreneurship",
+lesson: `
+<h3>Entrepreneurship</h3>
+
+<p>
+Entrepreneurship involves identifying opportunities and organising
+resources to provide goods or services.
+</p>
+
+<h3>Qualities of an entrepreneur</h3>
+
+<ul>
+<li>Creativity</li>
+<li>Hard work</li>
+<li>Risk awareness</li>
+<li>Decision-making</li>
+<li>Persistence</li>
+</ul>
+`,
+questions: [
+["Which is a quality of an entrepreneur?", [
+"Persistence",
+"Laziness",
+"Carelessness",
+"Dishonesty"
+], "Persistence"]
+]
+},
+
+{
+title: "Bookkeeping",
+lesson: `
+<h3>Bookkeeping</h3>
+
+<p>
+Bookkeeping is the systematic recording of financial transactions.
+</p>
+
+<p>
+Transactions can include sales, purchases, receipts and payments.
+</p>
+`,
+questions: [
+["What does bookkeeping involve?", [
+"Recording financial transactions",
+"Painting buildings",
+"Growing crops",
+"Teaching music"
+], "Recording financial transactions"]
+]
+}
+
+],
+
+
+"Agricultural Science": [
+
+{
+title: "Crop Production",
+lesson: `
+<h3>Crop Production</h3>
+
+<p>
+Crop production is the growing and management of crops for food,
+raw materials and other uses.
+</p>
+
+<h3>Basic stages</h3>
+
+<ul>
+<li>Land preparation</li>
+<li>Planting</li>
+<li>Weeding</li>
+<li>Fertilisation</li>
+<li>Pest control</li>
+<li>Harvesting</li>
+</ul>
+`,
+questions: [
+["Which activity is part of crop production?", [
+"Harvesting",
+"Typing",
+"Programming",
+"Driving"
+], "Harvesting"]
+]
+},
+
+{
+title: "Farm Tools",
+lesson: `
+<h3>Farm Tools</h3>
+
+<p>
+Farm tools are implements used to perform agricultural operations.
+</p>
+
+<ul>
+<li>Cutlass</li>
+<li>Hoe</li>
+<li>Rake</li>
+<li>Spade</li>
+<li>Wheelbarrow</li>
+</ul>
+`,
+questions: [
+["Which is a farm tool?", [
+"Hoe",
+"Keyboard",
+"Monitor",
+"Speaker"
+], "Hoe"]
+]
+}
+
+],
+
+
+"Physical & Health Education": [
+
+{
+title: "Physical Fitness",
+lesson: `
+<h3>Physical Fitness</h3>
+
+<p>
+Physical fitness is the ability of the body to perform daily activities
+efficiently without excessive fatigue.
+</p>
+
+<h3>Components</h3>
+
+<ul>
+<li>Strength</li>
+<li>Endurance</li>
+<li>Flexibility</li>
+<li>Speed</li>
+<li>Balance</li>
+</ul>
+`,
+questions: [
+["Which is a component of physical fitness?", [
+"Flexibility",
+"Pollution",
+"Inflation",
+"Migration"
+], "Flexibility"]
+]
+},
+
+{
+title: "Personal Hygiene",
+lesson: `
+<h3>Personal Hygiene</h3>
+
+<p>
+Personal hygiene means practices that help keep the body clean and healthy.
+</p>
+
+<ul>
+<li>Regular bathing</li>
+<li>Brushing teeth</li>
+<li>Washing hands</li>
+<li>Wearing clean clothes</li>
+<li>Keeping fingernails clean</li>
+</ul>
+`,
+questions: [
+["Which is part of personal hygiene?", [
+"Washing hands",
+"Throwing rubbish on the road",
+"Never bathing",
+"Sharing toothbrushes"
+], "Washing hands"]
+]
+}
+
+],
+
+
+"Christian Religious Studies": [
+
+{
+title: "Christian Character",
+lesson: `
+<h3>Christian Character</h3>
+
+<p>
+Christian character involves living according to values taught by Jesus Christ.
+</p>
+
+<p>
+Important qualities include love, honesty, forgiveness, humility,
+kindness and self-control.
+</p>
+`,
+questions: [
+["Which is an important Christian value?", [
+"Honesty",
+"Hatred",
+"Dishonesty",
+"Violence"
+], "Honesty"]
+]
+},
+
+{
+title: "Love for Others",
+lesson: `
+<h3>Love for Others</h3>
+
+<p>
+Christian teaching encourages people to show love, kindness,
+forgiveness and concern for others.
+</p>
+`,
+questions: [
+["Which behaviour shows love for others?", [
+"Helping someone",
+"Bullying",
+"Stealing",
+"Insulting"
+], "Helping someone"]
+]
+}
+
+],
+
+
+"Cultural & Creative Arts": [
+
+{
+title: "Elements of Art",
+lesson: `
+<h3>Elements of Art</h3>
+
+<p>
+The elements of art are basic components used to create artworks.
+</p>
+
+<ul>
+<li>Line</li>
+<li>Shape</li>
+<li>Colour</li>
+<li>Texture</li>
+<li>Space</li>
+<li>Form</li>
+<li>Value</li>
+</ul>
+`,
+questions: [
+["Which is an element of art?", [
+"Line",
+"Tax",
+"Currency",
+"Population"
+], "Line"]
+]
+},
+
+{
+title: "Music",
+lesson: `
+<h3>Music</h3>
+
+<p>
+Music is an organised combination of sounds and silence.
+</p>
+
+<p>
+Important musical concepts include rhythm, melody, harmony,
+tempo and dynamics.
+</p>
+`,
+questions: [
+["Which is a musical concept?", [
+"Rhythm",
+"Inflation",
+"Farming",
+"Taxation"
+], "Rhythm"]
+]
+}
+
+],
+
+
+"French": [
+
+{
+title: "Basic French Greetings",
+lesson: `
+<h3>Greetings</h3>
+
+<ul>
+<li>Bonjour – Good morning / Hello</li>
+<li>Bonsoir – Good evening</li>
+<li>Merci – Thank you</li>
+<li>Au revoir – Goodbye</li>
+<li>Comment ça va? – How are you?</li>
+</ul>
+`,
+questions: [
+["What does 'Merci' mean?", [
+"Goodbye",
+"Thank you",
+"Hello",
+"Good night"
+], "Thank you"]
+]
+},
+
+{
+title: "Numbers in French",
+lesson: `
+<h3>French Numbers</h3>
+
+<ul>
+<li>Un – 1</li>
+<li>Deux – 2</li>
+<li>Trois – 3</li>
+<li>Quatre – 4</li>
+<li>Cinq – 5</li>
+<li>Six – 6</li>
+<li>Sept – 7</li>
+<li>Huit – 8</li>
+<li>Neuf – 9</li>
+<li>Dix – 10</li>
+</ul>
+`,
+questions: [
+["What is 'Trois'?", ["1","2","3","4"], "3"]
+]
+}
+
+]
+
+};
+
+
+/* =========================================================
+   APPLICATION
+========================================================= */
+
+const subjectsDiv = document.getElementById("subjects");
+const content = document.getElementById("content");
+const search = document.getElementById("search");
+
+let currentSubject = "";
+let currentTopic = 0;
+
+
+/* CREATE SUBJECT LIST */
+
+function loadSubjects() {
+
+    subjectsDiv.innerHTML = "";
+
+    Object.keys(curriculum).forEach(subject => {
+
+        const div = document.createElement("div");
+
+        div.className = "subject";
+        div.textContent = subject;
+
+        div.onclick = () => {
+
+            currentSubject = subject;
+            currentTopic = 0;
+
+            showLesson();
+
+        };
+
+        subjectsDiv.appendChild(div);
+
+    });
+
+}
+
+loadSubjects();
+
+
+/* SHOW LESSON */
+
+function showLesson() {
+
+    const topics = curriculum[currentSubject];
+
+    const topic = topics[currentTopic];
+
+    let html = `
+
+        <div class="lesson">
+
+            <h2>${currentSubject}</h2>
+
+            <h3>${topic.title}</h3>
+
+            ${topic.lesson}
+
+            <div class="quiz">
+
+                <h2>📝 Test Yourself</h2>
+
+                <p>Answer the questions below.</p>
+
+    `;
+
+
+    topic.questions.forEach((q, index) => {
+
+        html += `
+
+        <div class="question">
+
+            <p><strong>${index + 1}. ${q[0]}</strong></p>
+
+        `;
+
+        q[1].forEach(option => {
+
+            html += `
+
+            <label class="option">
+
+                <input
+                    type="radio"
+                    name="question${index}"
+                    value="${option}"
+                >
+
+                ${option}
+
+            </label>
+
+            `;
+
+        });
+
+        html += `</div>`;
+
+    });
+
+
+    html += `
+
+        <button onclick="checkQuiz()">Submit Quiz</button>
+
+        <div id="quizResult" class="score"></div>
+
+        </div>
+
+        <div class="navigation">
+
+            <button onclick="previousTopic()">
+                ← Previous
+            </button>
+
+            <button onclick="nextTopic()">
+                Next Topic →
+            </button>
+
+        </div>
+
+        <div class="progress">
+
+            <div
+                class="progress-bar"
+                id="progressBar">
+            </div>
+
+        </div>
+
+        </div>
+
+    `;
+
+
+    content.innerHTML = html;
+
+    updateProgress();
+
+}
+
+
+/* CHECK QUIZ */
+
+function checkQuiz() {
+
+    const questions =
+        curriculum[currentSubject][currentTopic].questions;
+
+    let score = 0;
+
+    questions.forEach((question, index) => {
+
+        const selected =
+            document.querySelector(
+                `input[name="question${index}"]:checked`
+            );
+
+        if (selected && selected.value === question[2]) {
+            score++;
+        }
+
+    });
+
+
+    const percentage =
+        Math.round((score / questions.length) * 100);
+
+
+    document.getElementById("quizResult").innerHTML =
+        `Your score: ${score}/${questions.length}
+        (${percentage}%)`;
+
+}
+
+
+/* NEXT TOPIC */
+
+function nextTopic() {
+
+    const topics = curriculum[currentSubject];
+
+    if (currentTopic < topics.length - 1) {
+
+        currentTopic++;
+
+        showLesson();
+
+    } else {
+
+        alert(
+            "Congratulations! You have reached the end of the available topics for this subject."
+        );
+
+    }
+
+}
+
+
+/* PREVIOUS TOPIC */
+
+function previousTopic() {
+
+    if (currentTopic > 0) {
+
+        currentTopic--;
+
+        showLesson();
+
+    }
+
+}
+
+
+/* PROGRESS */
+
+function updateProgress() {
+
+    const topics = curriculum[currentSubject];
+
+    const percentage =
+        ((currentTopic + 1) / topics.length) * 100;
+
+    document.getElementById("progressBar").style.width =
+        percentage + "%";
+
+}
+
+
+/* SEARCH */
+
+search.addEventListener("input", function() {
+
+    const value = this.value.toLowerCase();
+
+    const matches = [];
+
+    Object.keys(curriculum).forEach(subject => {
+
+        if (subject.toLowerCase().includes(value)) {
+
+            matches.push(subject);
+
+        }
+
+        curriculum[subject].forEach((topic, index) => {
+
+            if (
+                topic.title
+                .toLowerCase()
+                .includes(value)
+            ) {
+
+                matches.push(
+                    subject + " → " + topic.title
+                );
+
+            }
+
+        });
+
+    });
+
+
+    if (value === "") {
+
+        loadSubjects();
+        return;
+
+    }
+
+
+    subjectsDiv.innerHTML = "";
+
+    matches.forEach(match => {
+
+        const div = document.createElement("div");
+
+        div.className = "subject";
+        div.textContent = match;
+
+        div.onclick = () => {
+
+            const parts = match.split(" → ");
+
+            currentSubject = parts[0];
+
+            if (parts.length > 1) {
+
+                currentTopic =
+                    curriculum[currentSubject]
+                    .findIndex(
+                        topic =>
+                        topic.title === parts[1]
+                    );
+
+            } else {
+
+                currentTopic = 0;
+
+            }
+
+            showLesson();
+
+        };
+
+        subjectsDiv.appendChild(div);
+
+    });
+
+});
+
+
+</script>
+
+</body>
+</html>
+```
