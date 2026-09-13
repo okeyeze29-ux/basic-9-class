@@ -1,0 +1,2864 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Basic 9 Class</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4eadc;
+    color:#3d2415;
+    transition:0.3s;
+}
+
+body.dark{
+    background:#17110d;
+    color:#ffffff;
+}
+
+header{
+    background:#6f3e20;
+    color:white;
+    padding:20px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+header h1{
+    font-size:30px;
+    margin-bottom:15px;
+    text-transform:lowercase;
+}
+
+nav{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+button{
+    background:#8b4513;
+    color:white;
+    border:none;
+    padding:11px 16px;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+button:hover{
+    background:#542b13;
+}
+
+body.dark button{
+    background:#b97945;
+    color:#1d130d;
+}
+
+main{
+    max-width:1200px;
+    margin:auto;
+    padding:25px;
+}
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+}
+
+.welcome{
+    text-align:center;
+    padding:30px 10px;
+}
+
+.welcome h2{
+    font-size:28px;
+    margin-bottom:10px;
+}
+
+.welcome p{
+    font-size:17px;
+}
+
+.progress-box{
+    background:#ead5bd;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:25px;
+}
+
+body.dark .progress-box{
+    background:#30231b;
+}
+
+.progress-bar{
+    width:100%;
+    height:18px;
+    background:#c5a98c;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:12px;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:#6f3e20;
+    transition:0.3s;
+}
+
+.search-box{
+    margin-bottom:25px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:13px;
+    border:1px solid #b9855d;
+    border-radius:8px;
+    margin:8px 0 18px;
+    font-size:16px;
+    background:white;
+    color:#2d1b10;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea{
+    background:#2b211b;
+    color:white;
+    border-color:#b97945;
+}
+
+.subject-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:18px;
+}
+
+.subject-card{
+    background:#fffaf3;
+    border:1px solid #d5b89a;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 3px 8px rgba(80,40,10,0.12);
+}
+
+body.dark .subject-card{
+    background:#2a201a;
+    border-color:#6f4a32;
+}
+
+.subject-card h3{
+    color:#6f3e20;
+    margin-bottom:10px;
+}
+
+body.dark .subject-card h3{
+    color:#e6a66d;
+}
+
+.subject-card p{
+    margin-bottom:10px;
+}
+
+.topic-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.topic-card{
+    background:#fffaf3;
+    border:1px solid #d5b89a;
+    padding:18px;
+    border-radius:10px;
+}
+
+body.dark .topic-card{
+    background:#2a201a;
+    border-color:#6f4a32;
+}
+
+.topic-card h3{
+    margin-bottom:10px;
+}
+
+.completed{
+    border:3px solid #3b8b4b;
+}
+
+.lesson-container{
+    background:#fffaf3;
+    padding:25px;
+    border-radius:12px;
+    line-height:1.8;
+}
+
+body.dark .lesson-container{
+    background:#2a201a;
+}
+
+.lesson-container h2{
+    color:#6f3e20;
+    margin-bottom:15px;
+}
+
+body.dark .lesson-container h2{
+    color:#e6a66d;
+}
+
+.lesson-container h3{
+    margin-top:20px;
+    color:#8b4513;
+}
+
+body.dark .lesson-container h3{
+    color:#e6a66d;
+}
+
+.lesson-text{
+    white-space:pre-line;
+}
+
+.exercise-box{
+    background:#f0dfc9;
+    padding:20px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+body.dark .exercise-box{
+    background:#39291f;
+}
+
+.navigation-buttons{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:25px;
+}
+
+.ai-box{
+    background:#fffaf3;
+    padding:25px;
+    border-radius:12px;
+}
+
+body.dark .ai-box{
+    background:#2a201a;
+}
+
+.ai-result{
+    margin-top:20px;
+    padding:25px;
+    background:#fff8ed;
+    border-left:6px solid #8b4513;
+    border-radius:10px;
+    line-height:1.8;
+    white-space:pre-line;
+    min-height:180px;
+}
+
+body.dark .ai-result{
+    background:#30251e;
+    color:white;
+}
+
+.ai-thinking{
+    animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+    50%{
+        opacity:0.5;
+    }
+}
+
+.exam-question{
+    background:#fffaf3;
+    padding:25px;
+    border-radius:12px;
+    margin-top:20px;
+}
+
+body.dark .exam-question{
+    background:#2a201a;
+}
+
+.exam-question h3{
+    color:#6f3e20;
+    margin-bottom:15px;
+}
+
+body.dark .exam-question h3{
+    color:#e6a66d;
+}
+
+.score-box{
+    background:#d7efda;
+    color:#174d22;
+    padding:25px;
+    border-radius:12px;
+    margin-top:20px;
+}
+
+.hidden{
+    display:none;
+}
+
+.back-button{
+    margin-bottom:20px;
+}
+
+@media(max-width:600px){
+
+    header h1{
+        font-size:23px;
+    }
+
+    main{
+        padding:15px;
+    }
+
+    .lesson-container{
+        padding:18px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>welcome to basic 9 class</h1>
+
+<nav>
+
+<button onclick="showHome()">Home</button>
+
+<button onclick="toggleDarkMode()">Dark Mode</button>
+
+<button onclick="changeName()">Change Name</button>
+
+<button onclick="showAITeacher()">AI Teacher</button>
+
+<button onclick="showRevision()">Revision</button>
+
+<button onclick="showMockExam()">Mock Exam</button>
+
+</nav>
+
+</header>
+
+
+<main>
+  <section id="revisionScreen" class="screen">
+
+    <div class="card">
+
+        <h2>Revision</h2>
+
+        <p>Select your subject and type the topic you want to revise.</p>
+
+        <label>Select Subject</label>
+
+        <select id="revisionSubject"></select>
+
+        <label>Type Topic</label>
+
+        <input
+            type="text"
+            id="revisionTopic"
+            placeholder="Example: Photosynthesis"
+        >
+
+        <button onclick="startRevision()">
+            Start Revision
+        </button>
+
+        <div id="revisionAnswer"></div>
+
+    </div>
+    <script>
+      function showRevision(){
+
+    const select = document.getElementById("revisionSubject");
+
+    select.innerHTML = "";
+
+    Object.keys(subjects).forEach(subject => {
+
+        const option = document.createElement("option");
+
+        option.value = subject;
+        option.textContent = subject;
+
+        select.appendChild(option);
+
+    });
+
+    document.getElementById("revisionAnswer").innerHTML = "";
+
+    showScreen("revisionScreen");
+}
+
+
+function startRevision(){
+
+    const subject =
+        document.getElementById("revisionSubject").value;
+
+    const topic =
+        document.getElementById("revisionTopic").value.trim();
+
+    const answer =
+        document.getElementById("revisionAnswer");
+
+    if(!topic){
+
+        answer.innerHTML = `
+            <p class="error">
+                Please type a topic.
+            </p>
+        `;
+
+        return;
+    }
+
+    const foundTopic = findTopic(subject, topic);
+
+    if(!foundTopic){
+
+        answer.innerHTML = `
+            <div class="card">
+
+                <h3>Topic Not Found</h3>
+
+                <p>
+                    "${topic}" was not found under
+                    ${subject}.
+                </p>
+
+                <p>
+                    Please check the topic and try again.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    answer.innerHTML = getRevisionLesson(
+        subject,
+        foundTopic
+    );
+}
+function findTopic(subject, typedTopic){
+
+    const topics = subjects[subject];
+
+    const search = typedTopic.toLowerCase();
+
+    return topics.find(topic =>
+        topic.toLowerCase() === search
+    ) || topics.find(topic =>
+        topic.toLowerCase().includes(search)
+    );
+}
+function getRevisionLesson(subject, topic){
+
+    if(subject === "Basic Science" &&
+       topic === "Photosynthesis"){
+
+        return `
+            <div class="card">
+
+                <h2>Photosynthesis</h2>
+
+                <h3>Simple Meaning</h3>
+
+                <p>
+                    Photosynthesis is the process by which
+                    green plants make their own food using
+                    sunlight.
+                </p>
+
+                <h3>Plants Need</h3>
+
+                <ul>
+                    <li>Sunlight</li>
+                    <li>Water</li>
+                    <li>Carbon dioxide</li>
+                    <li>Chlorophyll</li>
+                </ul>
+
+                <h3>Remember</h3>
+
+                <p>
+                    Green plants use sunlight, water and
+                    carbon dioxide to make food.
+                </p>
+
+                <h3>Revision Questions</h3>
+
+                <ol>
+                    <li>What is photosynthesis?</li>
+                    <li>List four things needed for photosynthesis.</li>
+                    <li>What gas is released?</li>
+                </ol>
+
+            </div>
+        `;
+    }
+
+    return `
+        <div class="card">
+
+            <h2>${topic}</h2>
+
+            <p>
+                This is a revision lesson for
+                ${topic} in ${subject}.
+            </p>
+
+            <h3>Key Points</h3>
+
+            <ul>
+                <li>Learn the meaning of ${topic}.</li>
+                <li>Learn the important terms.</li>
+                <li>Study examples.</li>
+                <li>Practise questions.</li>
+            </ul>
+
+        </div>
+    `;
+}
+    </script>
+
+</section>
+
+
+
+<!-- ================= HOME ================= -->
+
+<section id="homeScreen" class="screen active">
+
+<div class="welcome">
+
+<h2 id="welcomeTitle">
+Welcome to Basic 9 Class
+</h2>
+
+<p>
+Learn your Basic 9 subjects, study lessons,
+complete exercises and track your progress.
+</p>
+
+</div>
+
+
+<div class="progress-box">
+
+<h3>Overall Learning Progress</h3>
+
+<p id="overallProgressText">
+0% completed
+</p>
+
+<div class="progress-bar">
+
+<div id="overallProgressFill"
+class="progress-fill">
+</div>
+
+</div>
+
+</div>
+
+
+<div class="search-box">
+
+<label>Search for a subject</label>
+
+<input
+type="text"
+id="subjectSearch"
+placeholder="Type a subject name..."
+oninput="displaySubjects()"
+>
+
+</div>
+
+
+<div id="subjectGrid"
+class="subject-grid">
+</div>
+
+</section>
+
+
+
+<!-- ================= SUBJECT ================= -->
+
+<section id="subjectScreen" class="screen">
+
+<button
+class="back-button"
+onclick="showHome()">
+← Back Home
+</button>
+
+<h2 id="selectedSubjectTitle"></h2>
+
+<p>
+Choose a lesson below.
+</p>
+
+<div id="topicList"
+class="topic-list">
+</div>
+
+</section>
+
+
+
+<!-- ================= LESSON ================= -->
+
+<section id="lessonScreen" class="screen">
+
+<button
+class="back-button"
+onclick="goBackToSubject()">
+← Back to Subject
+</button>
+
+
+<div class="lesson-container">
+
+<h2 id="lessonTitle"></h2>
+
+<div
+id="lessonContent"
+class="lesson-text">
+</div>
+
+
+<div class="exercise-box">
+
+<h3>Exercise</h3>
+
+<p id="exerciseQuestion"></p>
+
+<textarea
+id="exerciseAnswer"
+rows="5"
+placeholder="Write your answer here..."
+></textarea>
+
+<button onclick="checkAnswer()">
+Check Answer
+</button>
+
+<p id="exerciseFeedback"></p>
+
+</div>
+
+
+<div class="navigation-buttons">
+
+<button onclick="previousLesson()">
+Previous Lesson
+</button>
+
+<button onclick="completeLesson()">
+Complete Lesson
+</button>
+
+<button onclick="nextLesson()">
+Next Lesson
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= AI TEACHER ================= -->
+
+<section id="aiTeacherScreen" class="screen">
+
+<button
+class="back-button"
+onclick="showHome()">
+← Back Home
+</button>
+
+
+<div class="ai-box">
+
+<h2>🤖 AI Teacher</h2>
+
+<p style="margin:15px 0;">
+
+Welcome to the AI Teacher.
+
+Select a subject, type the topic you want to learn,
+and the AI Teacher will explain the lesson based
+on that subject.
+
+</p>
+
+
+<label>
+Select Subject
+</label>
+
+<select id="aiSubject">
+
+<option value="">
+-- Select Subject --
+</option>
+
+</select>
+
+
+<label>
+Type Your Topic
+</label>
+
+<input
+type="text"
+id="aiTopic"
+placeholder="Example: Number Bases"
+>
+
+
+<button onclick="askAITeacher()">
+Explain Lesson
+</button>
+
+
+<div
+id="aiTeacherResult"
+class="ai-result">
+
+Your AI Teacher explanation will appear here.
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= MOCK EXAM ================= -->
+
+<section id="mockExamScreen" class="screen">
+
+<button
+class="back-button"
+onclick="showHome()">
+← Back Home
+</button>
+
+
+<div class="lesson-container">
+
+<h2>
+Basic 9 Mock Examination
+</h2>
+
+<p>
+Type a subject and generate 120 difficult practice questions.
+</p>
+
+
+<label>
+Subject
+</label>
+
+<input
+type="text"
+id="examSubject"
+placeholder="Example: Mathematics"
+>
+
+
+<button onclick="startMockExam()">
+Start Mock Exam
+</button>
+
+
+<div id="examArea"
+class="hidden">
+
+<p
+id="examProgress"
+style="margin-top:20px;">
+</p>
+
+
+<div class="exam-question">
+
+<h3 id="examQuestionTitle"></h3>
+
+<textarea
+id="examAnswer"
+rows="7"
+placeholder="Write your answer here..."
+></textarea>
+
+<button onclick="submitMockAnswer()">
+Submit Answer
+</button>
+
+<button onclick="nextMockQuestion()">
+Next Question
+</button>
+
+<p id="examFeedback"></p>
+
+</div>
+
+</div>
+
+
+<div
+id="examResult"
+class="score-box hidden">
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+
+<script>
+
+
+/* =========================================================
+   SUBJECTS AND TOPICS
+========================================================= */
+
+const subjects = {
+
+"Mathematics":[
+"Number Bases",
+"Linear Equations",
+"Algebraic Expressions",
+"Factorisation",
+"Quadratic Equations",
+"Indices",
+"Logarithms",
+"Probability",
+"Statistics",
+"Geometry",
+"Trigonometry",
+"Mensuration",
+"Graphs"
+],
+
+"English Studies":[
+"Parts of Speech",
+"Nouns",
+"Pronouns",
+"Verbs",
+"Adjectives",
+"Adverbs",
+"Prepositions",
+"Conjunctions",
+"Sentence Structure",
+"Comprehension",
+"Summary Writing",
+"Letter Writing",
+"Figures of Speech"
+],
+
+"Basic Science":[
+"Living Things",
+"Cells",
+"Human Body",
+"Nutrition",
+"Reproduction",
+"Respiration",
+"Photosynthesis",
+"Energy",
+"Matter",
+"Force",
+"Electricity",
+"Heat",
+"Environment"
+],
+
+"Social Studies":[
+"Family",
+"Culture",
+"Socialisation",
+"Community",
+"Leadership",
+"Values",
+"Conflict",
+"Peace",
+"Population",
+"Migration",
+"Transportation",
+"Communication",
+"Globalisation"
+],
+
+"Computer Studies":[
+"Computer Basics",
+"Computer Hardware",
+"Computer Software",
+"Operating Systems",
+"Input Devices",
+"Output Devices",
+"Storage Devices",
+"Internet",
+"Cyber Safety",
+"Programming",
+"Algorithms",
+"Artificial Intelligence",
+"Computer Ethics"
+],
+
+"Basic Technology":[
+"Technology",
+"Workshop Safety",
+"Tools",
+"Woodwork",
+"Metalwork",
+"Technical Drawing",
+"Building",
+"Electricity",
+"Electronics",
+"Machines",
+"Energy",
+"Maintenance",
+"Technology and Society"
+],
+
+"Civic Education":[
+"Citizenship",
+"Rights",
+"Duties",
+"Responsibilities",
+"Democracy",
+"Rule of Law",
+"Human Rights",
+"National Values",
+"Leadership",
+"Political Participation",
+"Corruption",
+"National Unity",
+"Good Governance"
+],
+
+"Christian Religious Studies":[
+"Creation",
+"The Fall of Man",
+"Noah",
+"Abraham",
+"Moses",
+"David",
+"The Prophets",
+"Birth of Jesus",
+"Teachings of Jesus",
+"Miracles",
+"Death of Jesus",
+"Resurrection",
+"Christian Living"
+],
+
+"Islamic Religious Studies":[
+"Islam",
+"Articles of Faith",
+"Five Pillars",
+"Prayer",
+"Fasting",
+"Zakat",
+"Hajj",
+"Prophet Muhammad",
+"Quran",
+"Hadith",
+"Good Character",
+"Peace",
+"Islamic Brotherhood"
+],
+
+"Physical and Health Education":[
+"Physical Fitness",
+"Exercise",
+"Athletics",
+"Football",
+"Basketball",
+"Volleyball",
+"Gymnastics",
+"Swimming",
+"Nutrition",
+"Personal Hygiene",
+"First Aid",
+"Safety",
+"Healthy Living"
+],
+
+"Creative Arts":[
+"Drawing",
+"Painting",
+"Colour",
+"Design",
+"Craft",
+"Sculpture",
+"Drama",
+"Music",
+"Dance",
+"Photography",
+"Textiles",
+"SArt Appreciation",
+"Nigerian Art"
+],
+
+"Agricultural Science":[
+"Agriculture",
+"Soil",
+"Soil Fertility",
+"Crops",
+"Crop Production",
+"Pests",
+"Diseases",
+"Livestock",
+"Animal Nutrition",
+"Animal Health",
+"Farm Tools",
+"Farm Management",
+"Agricultural Marketing"
+],
+
+"Home Economics":[
+"Home Economics",
+"Food",
+"Nutrition",
+"Meal Planning",
+"Cooking",
+"Food Preservation",
+"Clothing",
+"Textiles",
+"Sewing",
+"Home Management",
+"Consumer Education",
+"Child Development",
+"Family Relationships"
+]
+
+};
+
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+let currentSubject = "";
+
+let currentLessonIndex = 0;
+
+let examQuestions = [];
+
+let currentExamQuestion = 0;
+
+let examScore = 0;
+
+let answerSubmitted = false;
+
+
+
+/* =========================================================
+   SCREEN SYSTEM
+========================================================= */
+
+function showScreen(screenId){
+
+document
+.querySelectorAll(".screen")
+.forEach(screen=>{
+screen.classList.remove("active");
+});
+
+document
+.getElementById(screenId)
+.classList.add("active");
+
+}
+
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function showHome(){
+
+showScreen("homeScreen");
+
+displaySubjects();
+
+updateOverallProgress();
+
+}
+
+
+
+/* =========================================================
+   DISPLAY SUBJECTS
+========================================================= */
+
+function displaySubjects(){
+
+const grid =
+document.getElementById("subjectGrid");
+
+const search =
+document
+.getElementById("subjectSearch")
+.value
+.toLowerCase()
+.trim();
+
+grid.innerHTML="";
+
+
+Object.keys(subjects).forEach(subject=>{
+
+if(
+!subject.toLowerCase().includes(search)
+){
+return;
+}
+
+
+let completedCount=0;
+
+
+subjects[subject].forEach(topic=>{
+
+if(
+isLessonCompleted(subject,topic)
+){
+completedCount++;
+}
+
+});
+
+
+const card =
+document.createElement("div");
+
+card.className="subject-card";
+
+
+card.innerHTML=`
+
+<h3>${subject}</h3>
+
+<p>
+${subjects[subject].length}
+lessons available
+</p>
+
+<p>
+${completedCount}
+of
+${subjects[subject].length}
+completed
+</p>
+
+<button
+onclick="showSubject('${subject}')">
+
+Open Subject
+
+</button>
+
+`;
+
+
+grid.appendChild(card);
+
+});
+
+}
+
+
+
+/* =========================================================
+   SUBJECT
+========================================================= */
+
+function showSubject(subject){
+
+currentSubject=subject;
+
+showScreen("subjectScreen");
+
+
+document
+.getElementById("selectedSubjectTitle")
+.textContent=subject;
+
+
+const topicList =
+document.getElementById("topicList");
+
+topicList.innerHTML="";
+
+
+subjects[subject].forEach(
+(topic,index)=>{
+
+const completed =
+isLessonCompleted(
+subject,
+topic
+);
+
+
+const card =
+document.createElement("div");
+
+card.className="topic-card";
+
+
+if(completed){
+
+card.classList.add("completed");
+
+}
+
+
+card.innerHTML=`
+
+<h3>
+${index+1}. ${topic}
+</h3>
+
+<p>
+${completed
+?"✓ Completed"
+:"Not completed"}
+</p>
+
+<button
+onclick="openLesson('${subject}',${index})">
+
+${completed
+?"Review Lesson"
+:"Start Lesson"}
+
+</button>
+
+`;
+
+
+topicList.appendChild(card);
+
+});
+
+}
+
+
+
+/* =========================================================
+   OPEN LESSON
+========================================================= */
+
+function openLesson(subject,index){
+
+currentSubject=subject;
+
+currentLessonIndex=index;
+
+showScreen("lessonScreen");
+
+
+const topic=
+subjects[subject][index];
+
+
+document
+.getElementById("lessonTitle")
+.textContent=
+subject+" - "+topic;
+
+
+document
+.getElementById("lessonContent")
+.textContent=
+getDetailedLesson(subject,topic);
+
+
+document
+.getElementById("exerciseQuestion")
+.textContent=
+createExercise(subject,topic);
+
+
+document
+.getElementById("exerciseAnswer")
+.value="";
+
+
+document
+.getElementById("exerciseFeedback")
+.textContent="";
+
+}
+
+
+
+/* =========================================================
+   BACK TO SUBJECT
+========================================================= */
+
+function goBackToSubject(){
+
+showSubject(currentSubject);
+
+}
+
+
+
+/* =========================================================
+   LESSON NAVIGATION
+========================================================= */
+
+function previousLesson(){
+
+if(currentLessonIndex>0){
+
+openLesson(
+currentSubject,
+currentLessonIndex-1
+);
+
+}else{
+
+alert("This is the first lesson.");
+
+}
+
+}
+
+
+function nextLesson(){
+
+if(
+currentLessonIndex
+<
+subjects[currentSubject].length-1
+){
+
+openLesson(
+currentSubject,
+currentLessonIndex+1
+);
+
+}else{
+
+alert(
+"You have reached the last lesson."
+);
+
+}
+
+}
+
+
+
+/* =========================================================
+   COMPLETE LESSON
+========================================================= */
+
+function completeLesson(){
+
+const topic=
+subjects[currentSubject][currentLessonIndex];
+
+
+localStorage.setItem(
+"basic9Progress|"+
+currentSubject+
+"|"+
+topic,
+"completed"
+);
+
+
+document
+.getElementById("exerciseFeedback")
+.textContent=
+"✓ Lesson completed successfully!";
+
+
+updateOverallProgress();
+
+}
+
+
+
+/* =========================================================
+   CHECK COMPLETION
+========================================================= */
+
+function isLessonCompleted(
+subject,
+topic
+){
+
+return localStorage.getItem(
+"basic9Progress|"+
+subject+
+"|"+
+topic
+)==="completed";
+
+}
+
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+function updateOverallProgress(){
+
+let total=0;
+
+let completed=0;
+
+
+Object.keys(subjects)
+.forEach(subject=>{
+
+total+=subjects[subject].length;
+
+
+subjects[subject].forEach(topic=>{
+
+if(
+isLessonCompleted(subject,topic)
+){
+
+completed++;
+
+}
+
+});
+
+});
+
+
+const percentage=
+Math.round(
+(completed/total)*100
+);
+
+
+document
+.getElementById("overallProgressText")
+.textContent=
+percentage+"% completed";
+
+
+document
+.getElementById("overallProgressFill")
+.style.width=
+percentage+"%";
+
+}
+
+
+
+/* =========================================================
+   EXERCISES
+========================================================= */
+
+function createExercise(subject,topic){
+
+const exercises={
+
+"Mathematics|Number Bases":
+"Convert 1011₂ to decimal and show all your working.",
+
+"Mathematics|Linear Equations":
+"Solve 4x - 7 = 21 and show your working.",
+
+"English Studies|Parts of Speech":
+"Identify the noun, verb, adjective and adverb in this sentence: The intelligent boy answered correctly.",
+
+"Computer Studies|Artificial Intelligence":
+"Explain five examples of Artificial Intelligence in everyday life.",
+
+"Basic Science|Cells":
+"Define a cell and state five parts of a typical cell.",
+
+"Civic Education|Citizenship":
+"Define citizenship and explain five responsibilities of a good citizen."
+
+};
+
+
+return exercises[
+subject+"|"+topic
+]||
+"Define "+topic+
+", explain its importance and give three examples.";
+
+}
+
+
+
+/* =========================================================
+   CHECK ANSWER
+========================================================= */
+
+function checkAnswer(){
+
+const answer=
+document
+.getElementById("exerciseAnswer")
+.value
+.trim();
+
+
+const feedback=
+document
+.getElementById("exerciseFeedback");
+
+
+if(answer.length<10){
+
+feedback.textContent=
+"Please write a more detailed answer.";
+
+return;
+
+}
+
+
+feedback.textContent=
+"Good attempt! Read the lesson again and compare your answer with the explanation.";
+
+}
+
+
+
+/* =========================================================
+   DETAILED LESSONS
+========================================================= */
+
+function getDetailedLesson(subject,topic){
+
+const lessons={
+
+
+
+/* MATHEMATICS */
+
+"Mathematics|Number Bases":`
+
+NUMBER BASES
+
+Number bases are systems used to represent numbers.
+
+The decimal number system is base 10 and uses the digits
+0,1,2,3,4,5,6,7,8 and 9.
+
+The binary number system is base 2 and uses only 0 and 1.
+
+Example:
+
+Convert 1011₂ to decimal.
+
+Working:
+
+1 × 2³ = 8
+0 × 2² = 0
+1 × 2¹ = 2
+1 × 2⁰ = 1
+
+Therefore:
+
+8 + 0 + 2 + 1 = 11.
+
+So:
+
+1011₂ = 11₁₀
+
+Binary numbers are very important in computers because
+computers use electronic states represented by 0 and 1.
+
+EXAMPLE:
+
+Convert 1101₂ to decimal.
+
+1 × 2³ = 8
+1 × 2² = 4
+0 × 2¹ = 0
+1 × 2⁰ = 1
+
+8 + 4 + 0 + 1 = 13.
+
+Therefore:
+
+1101₂ = 13₁₀.
+`,
+
+
+"Mathematics|Linear Equations":`
+
+LINEAR EQUATIONS
+
+A linear equation is an equation where the highest power
+of the unknown is one.
+
+Example:
+
+3x + 5 = 20
+
+Step 1:
+
+Subtract 5 from both sides.
+
+3x = 15
+
+Step 2:
+
+Divide both sides by 3.
+
+x = 5
+
+Therefore:
+
+x = 5.
+
+Another example:
+
+4x - 7 = 21
+
+Add 7 to both sides:
+
+4x = 28
+
+Divide by 4:
+
+x = 7.
+
+The important rule is that whatever operation you perform
+on one side must also be performed on the other side.
+`,
+
+
+"Mathematics|Algebraic Expressions":`
+
+ALGEBRAIC EXPRESSIONS
+
+An algebraic expression contains numbers, variables and
+mathematical operations.
+
+Examples:
+
+3x + 5
+2a - 7
+4x² + 3x + 1
+
+In 5x, the number 5 is called the coefficient and x is
+the variable.
+
+Like terms are terms that have the same variables and
+the same powers.
+
+Examples:
+
+3x and 5x are like terms.
+
+Therefore:
+
+3x + 5x = 8x.
+
+However:
+
+3x and 5y are unlike terms.
+
+Algebra is useful for representing unknown quantities
+and solving mathematical problems.
+`,
+
+
+"Mathematics|Factorisation":`
+
+FACTORIZATION
+
+Factorisation is the process of expressing an algebraic
+expression as a product of factors.
+
+Example:
+
+6x + 12
+
+The highest common factor is 6.
+
+Therefore:
+
+6x + 12 = 6(x + 2).
+
+Another example:
+
+x² + 5x + 6
+
+We look for two numbers whose product is 6 and whose
+sum is 5.
+
+The numbers are 2 and 3.
+
+Therefore:
+
+x² + 5x + 6
+= (x + 2)(x + 3).
+
+Factorisation is useful when simplifying expressions
+and solving equations.
+`,
+
+
+"Mathematics|Quadratic Equations":`
+
+QUADRATIC EQUATIONS
+
+A quadratic equation is an equation whose highest power
+of the variable is 2.
+
+The general form is:
+
+ax² + bx + c = 0.
+
+Example:
+
+x² + 5x + 6 = 0.
+
+Factorise:
+
+(x + 2)(x + 3) = 0.
+
+Therefore:
+
+x = -2 or x = -3.
+
+Quadratic equations can be solved by factorisation,
+completing the square or using the quadratic formula.
+`,
+
+
+/* ENGLISH */
+
+"English Studies|Parts of Speech":`
+
+PARTS OF SPEECH
+
+Parts of speech are groups into which words are classified
+according to their functions in sentences.
+
+The major parts include:
+
+1. NOUN
+
+A noun names a person, place, animal, thing or idea.
+
+Examples:
+
+teacher
+Lagos
+book
+honesty
+
+2. PRONOUN
+
+A pronoun replaces a noun.
+
+Examples:
+
+he
+she
+it
+they
+we
+
+3. VERB
+
+A verb shows an action or state.
+
+Examples:
+
+run
+write
+eat
+is
+
+4. ADJECTIVE
+
+An adjective describes a noun or pronoun.
+
+Examples:
+
+beautiful
+tall
+intelligent
+large
+
+5. ADVERB
+
+An adverb describes a verb, adjective or another adverb.
+
+Examples:
+
+quickly
+carefully
+very
+
+6. PREPOSITION
+
+A preposition shows a relationship between words.
+
+Examples:
+
+in
+on
+under
+beside
+behind
+
+7. CONJUNCTION
+
+A conjunction joins words, phrases or clauses.
+
+Examples:
+
+and
+but
+because
+or
+
+8. INTERJECTION
+
+An interjection expresses sudden emotion.
+
+Examples:
+
+Wow!
+Oh!
+Alas!
+`,
+
+
+"English Studies|Nouns":`
+
+NOUNS
+
+A noun is a word used to name a person, place, animal,
+thing or idea.
+
+Examples:
+
+Person: teacher
+Place: school
+Animal: dog
+Thing: table
+Idea: honesty
+
+Types of nouns include:
+
+1. Proper nouns
+2. Common nouns
+3. Collective nouns
+4. Abstract nouns
+5. Concrete nouns
+
+A proper noun begins with a capital letter.
+
+Examples:
+
+Nigeria
+Lagos
+Daniel
+
+A common noun gives a general name.
+
+Examples:
+
+country
+city
+student
+`,
+
+
+/* BASIC SCIENCE */
+
+"Basic Science|Cells":`
+
+CELLS
+
+The cell is the basic structural and functional unit
+of living organisms.
+
+Some organisms consist of one cell while others consist
+of many cells.
+
+Important cell structures include:
+
+Cell membrane:
+Controls what enters and leaves the cell.
+
+Cytoplasm:
+Contains many of the chemical activities of the cell.
+
+Nucleus:
+Controls many activities of the cell and contains
+genetic material.
+
+Plant cells also have:
+
+Cell wall
+Chloroplast
+Large vacuole
+
+Animal cells do not have a cell wall or chloroplast.
+
+Cells combine to form tissues, tissues form organs,
+and organs work together in organ systems.
+`,
+
+
+"Basic Science|Photosynthesis":`
+
+PHOTOSYNTHESIS
+
+Photosynthesis is the process by which green plants
+make their food using sunlight.
+
+Plants require:
+
+1. Sunlight
+2. Water
+3. Carbon dioxide
+4. Chlorophyll
+
+The process mainly takes place in the leaves.
+
+The simplified equation is:
+
+Carbon dioxide + Water
+→ Glucose + Oxygen
+
+Photosynthesis is important because it produces food
+and releases oxygen into the atmosphere.
+`,
+
+
+/* COMPUTER */
+
+"Computer Studies|Artificial Intelligence":`
+
+ARTIFICIAL INTELLIGENCE
+
+Artificial Intelligence, commonly called AI, refers
+to computer systems designed to perform tasks that
+normally require aspects of human intelligence.
+
+Examples include:
+
+1. Chatbots
+2. Voice assistants
+3. Face recognition
+4. Language translation
+5. Recommendation systems
+6. Educational AI systems
+
+AI can be used to identify patterns, process information,
+answer questions, make predictions and assist people
+with different tasks.
+
+ADVANTAGES
+
+- Fast processing of information
+- Personalised learning
+- Automation
+- Pattern recognition
+- Assistance with problem solving
+
+LIMITATIONS
+
+- AI can make mistakes.
+- AI depends on the information available to it.
+- People should verify important information.
+- AI should be used responsibly.
+
+In education, an AI Teacher can help students understand
+lessons, practise questions and review difficult topics.
+`,
+
+
+"Computer Studies|Computer Hardware":`
+
+COMPUTER HARDWARE
+
+Computer hardware refers to the physical parts of a
+computer that can be seen and touched.
+
+Examples include:
+
+Monitor
+Keyboard
+Mouse
+System unit
+Printer
+Speakers
+Hard drive
+
+Input devices allow information to enter the computer.
+
+Output devices present information from the computer.
+
+Storage devices keep data for future use.
+
+Hardware works together with software to make a computer
+system useful.
+`
+
+};
+
+
+const key=
+subject+"|"+topic;
+
+
+if(lessons[key]){
+return lessons[key];
+}
+
+
+return genericLesson(subject,topic);
+
+}
+
+
+
+/* =========================================================
+   GENERIC LESSON
+========================================================= */
+
+function genericLesson(subject,topic){
+
+return `
+
+${topic.toUpperCase()}
+
+SUBJECT:
+
+${subject}
+
+INTRODUCTION
+
+${topic} is an important topic studied under
+${subject}.
+
+MEANING
+
+${topic} refers to the ideas, principles, processes
+or activities connected with this area of study.
+
+MAIN POINTS
+
+1. Understand the meaning of ${topic}.
+
+2. Identify the important features of ${topic}.
+
+3. Study examples related to ${topic}.
+
+4. Understand how ${topic} works.
+
+5. Learn how ${topic} can be applied in real life.
+
+IMPORTANCE
+
+Studying ${topic} helps students develop knowledge,
+understanding, critical thinking and problem-solving
+skills.
+
+REAL-LIFE APPLICATION
+
+The knowledge gained from ${topic} can be useful
+at home, at school, in the community and in future
+careers.
+
+SUMMARY
+
+${topic} is an important part of ${subject}.
+Students should understand its meaning, features,
+examples, importance and applications.
+
+PRACTICE
+
+1. Define ${topic}.
+
+2. State five important points about ${topic}.
+
+3. Give three examples related to ${topic}.
+
+4. Explain the importance of ${topic}.
+
+5. Write a short note on ${topic}.
+`;
+
+}
+
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+function toggleDarkMode(){
+
+document.body.classList.toggle("dark");
+
+localStorage.setItem(
+"basic9DarkMode",
+document.body.classList.contains("dark")
+);
+
+}
+
+
+
+/* =========================================================
+   CHANGE NAME
+========================================================= */
+
+function changeName(){
+
+const oldName=
+localStorage.getItem("basic9UserName")
+||"Student";
+
+
+const newName=
+prompt(
+"Enter your name:",
+oldName
+);
+
+
+if(
+newName &&
+newName.trim()!=""
+){
+
+localStorage.setItem(
+"basic9UserName",
+newName.trim()
+);
+
+
+document
+.getElementById("welcomeTitle")
+.textContent=
+"Welcome "+
+newName.trim()+
+" to Basic 9 AI Class";
+
+}
+
+}
+
+
+
+/* =========================================================
+   AI TEACHER
+========================================================= */
+
+function showAITeacher(){
+
+showScreen("aiTeacherScreen");
+
+
+const select=
+document.getElementById("aiSubject");
+
+
+select.innerHTML=
+'<option value="">-- Select Subject --</option>';
+
+
+Object.keys(subjects).forEach(subject=>{
+
+const option=
+document.createElement("option");
+
+option.value=subject;
+
+option.textContent=subject;
+
+select.appendChild(option);
+
+});
+
+
+document
+.getElementById("aiTopic")
+.value="";
+
+
+document
+.getElementById("aiTeacherResult")
+.textContent=
+"Choose a subject and type the topic you want me to teach.";
+
+}
+
+
+
+/* =========================================================
+   AI TEACHER TOPIC MATCHING
+========================================================= */
+
+function findTopic(subject,typedTopic){
+
+const topics=
+subjects[subject];
+
+
+const typed=
+typedTopic
+.toLowerCase()
+.trim();
+
+
+/* Exact match */
+
+const exact=
+topics.find(topic=>
+topic.toLowerCase()===typed
+);
+
+
+if(exact){
+return exact;
+}
+
+
+/* Partial match */
+
+const partial=
+topics.find(topic=>
+topic.toLowerCase().includes(typed) ||
+typed.includes(topic.toLowerCase())
+);
+
+
+return partial || null;
+
+}
+
+
+
+/* =========================================================
+   ASK AI TEACHER
+========================================================= */
+
+function askAITeacher(){
+
+const subject=
+document
+.getElementById("aiSubject")
+.value;
+
+
+const topic=
+document
+.getElementById("aiTopic")
+.value
+.trim();
+
+
+const result=
+document
+.getElementById("aiTeacherResult");
+
+
+if(!subject){
+
+result.textContent=
+"Please select a subject first.";
+
+return;
+
+}
+
+
+if(!topic){
+
+result.textContent=
+"Please type a topic first.";
+
+return;
+
+}
+
+
+const matchedTopic=
+findTopic(subject,topic);
+
+
+/*
+If the topic is found in the subject,
+use the official topic.
+
+If not found, the teacher can still
+create a general lesson using the
+typed topic.
+*/
+
+const finalTopic=
+matchedTopic || topic;
+
+
+result.classList.add("ai-thinking");
+
+result.textContent=
+"AI Teacher is preparing your lesson...";
+
+
+setTimeout(()=>{
+
+const explanation=
+getDetailedLesson(
+subject,
+finalTopic
+);
+
+
+result.classList.remove("ai-thinking");
+
+
+result.textContent=
+"AI TEACHER\n\n"+
+"SUBJECT: "+subject+
+"\nTOPIC: "+finalTopic+
+"\n\n"+
+explanation+
+"\n\n"+
+"AI TEACHER PRACTICE QUESTIONS\n\n"+
+"1. What is "+finalTopic+"?\n\n"+
+"2. State five important points about "+
+finalTopic+".\n\n"+
+"3. Give three examples related to "+
+finalTopic+".\n\n"+
+"4. Explain why "+finalTopic+
+" is important in "+subject+".\n\n"+
+"5. Write a short note on "+
+finalTopic+".";
+
+},700);
+
+}
+
+
+
+/* =========================================================
+   MOCK EXAM
+========================================================= */
+
+function showMockExam(){
+
+showScreen("mockExamScreen");
+
+
+document
+.getElementById("examArea")
+.classList.add("hidden");
+
+
+document
+.getElementById("examResult")
+.classList.add("hidden");
+
+
+document
+.getElementById("examSubject")
+.value="";
+
+}
+
+
+
+/* =========================================================
+   START MOCK EXAM
+========================================================= */
+
+function startMockExam(){
+
+const typed=
+document
+.getElementById("examSubject")
+.value
+.trim()
+.toLowerCase();
+
+
+const subject=
+Object.keys(subjects)
+.find(name=>
+name.toLowerCase()===typed
+);
+
+
+if(!subject){
+
+alert(
+"Subject not found.\n\nAvailable subjects:\n\n"+
+Object.keys(subjects).join("\n")
+);
+
+return;
+
+}
+
+
+examQuestions=
+createMockQuestions(subject);
+
+
+currentExamQuestion=0;
+
+examScore=0;
+
+answerSubmitted=false;
+
+
+document
+.getElementById("examArea")
+.classList.remove("hidden");
+
+
+document
+.getElementById("examResult")
+.classList.add("hidden");
+
+
+displayMockQuestion();
+
+}
+
+
+
+/* =========================================================
+   CREATE 120 QUESTIONS
+========================================================= */
+
+function createMockQuestions(subject){
+
+const questions=[];
+
+
+const templates=[
+
+"Define {topic} and explain its importance.",
+
+"State and explain five features of {topic}.",
+
+"Discuss the importance of {topic}.",
+
+"Give five examples related to {topic}.",
+
+"Explain how {topic} is used in everyday life.",
+
+"Compare two important ideas connected with {topic}.",
+
+"State five causes or effects related to {topic}.",
+
+"Describe the steps involved in {topic}.",
+
+"Write detailed notes on {topic}.",
+
+"Explain the advantages and disadvantages of {topic}."
+
+];
+
+
+for(
+let i=0;
+i<120;
+i++
+){
+
+const topic=
+subjects[subject]
+[
+i % subjects[subject].length
+];
+
+
+const template=
+templates[
+i % templates.length
+];
+
+
+questions.push({
+
+subject:subject,
+
+topic:topic,
+
+question:
+template.replace(
+"{topic}",
+topic
+)
+
+});
+
+}
+
+
+return questions;
+
+}
+
+
+
+/* =========================================================
+   DISPLAY QUESTION
+========================================================= */
+
+function displayMockQuestion(){
+
+const question=
+examQuestions[
+currentExamQuestion
+];
+
+
+document
+.getElementById("examProgress")
+.textContent=
+"Question "+
+(currentExamQuestion+1)+
+" of "+
+examQuestions.length;
+
+
+document
+.getElementById("examQuestionTitle")
+.textContent=
+question.question;
+
+
+document
+.getElementById("examAnswer")
+.value="";
+
+
+document
+.getElementById("examFeedback")
+.textContent="";
+
+
+answerSubmitted=false;
+
+}
+
+
+
+/* =========================================================
+   SUBMIT ANSWER
+========================================================= */
+
+function submitMockAnswer(){
+
+if(answerSubmitted){
+
+document
+.getElementById("examFeedback")
+.textContent=
+"Answer already submitted.";
+
+return;
+
+}
+
+
+const answer=
+document
+.getElementById("examAnswer")
+.value
+.trim();
+
+
+if(answer.length<20){
+
+document
+.getElementById("examFeedback")
+.textContent=
+"Please write a more detailed answer.";
+
+return;
+
+}
+
+
+examScore++;
+
+answerSubmitted=true;
+
+
+document
+.getElementById("examFeedback")
+.textContent=
+"Answer submitted successfully. Continue to the next question.";
+
+}
+
+
+
+/* =========================================================
+   NEXT QUESTION
+========================================================= */
+
+function nextMockQuestion(){
+
+if(!answerSubmitted){
+
+alert(
+"Please submit your answer first."
+);
+
+return;
+
+}
+
+
+currentExamQuestion++;
+
+
+if(
+currentExamQuestion>=
+examQuestions.length
+){
+
+finishMockExam();
+
+return;
+
+}
+
+
+displayMockQuestion();
+
+}
+
+
+
+/* =========================================================
+   FINISH EXAM
+========================================================= */
+
+function finishMockExam(){
+
+document
+.getElementById("examArea")
+.classList.add("hidden");
+
+
+const result=
+document
+.getElementById("examResult");
+
+
+result.classList.remove("hidden");
+
+
+const percentage=
+Math.round(
+(examScore/
+examQuestions.length)*100
+);
+
+
+result.innerHTML=`
+
+<h3>
+Mock Examination Completed
+</h3>
+
+<p>
+Questions attempted:
+${examQuestions.length}
+</p>
+
+<p>
+Practice score:
+${examScore}
+/
+${examQuestions.length}
+</p>
+
+<p>
+Percentage:
+${percentage}%
+</p>
+
+<p>
+Keep studying and practising to improve your result.
+</p>
+
+`;
+
+}
+
+
+
+/* =========================================================
+   LOAD SAVED SETTINGS
+========================================================= */
+
+function loadSavedSettings(){
+
+const savedName=
+localStorage.getItem(
+"basic9UserName"
+);
+
+
+if(savedName){
+
+document
+.getElementById("welcomeTitle")
+.textContent=
+"Welcome "+
+savedName+
+" to Basic 9 AI Class";
+
+}
+
+
+const dark=
+localStorage.getItem(
+"basic9DarkMode"
+)==="true";
+
+
+if(dark){
+
+document
+.body
+.classList
+.add("dark");
+
+}
+
+}
+
+
+
+/* =========================================================
+   FIRST VISIT
+========================================================= */
+
+function firstVisit(){
+
+const visited=
+localStorage.getItem(
+"basic9Visited"
+);
+
+
+if(!visited){
+
+alert(
+
+"Welcome to Basic 9 AI Class!\n\n"+
+"How to use the website:\n\n"+
+"1. Choose a subject.\n"+
+"2. Choose a lesson.\n"+
+"3. Read the lesson carefully.\n"+
+"4. Complete the exercise.\n"+
+"5. Mark the lesson as completed.\n"+
+"6. Use Next Lesson to continue.\n"+
+"7. Use AI Teacher to ask for an explanation of a topic.\n"+
+"8. Use Mock Exam to practise 120 questions.\n"+
+"9. Your progress is saved automatically."
+
+);
+
+
+localStorage.setItem(
+"basic9Visited",
+"true"
+);
+
+}
+
+}
+
+
+
+/* =========================================================
+   START WEBSITE
+========================================================= */
+
+loadSavedSettings();
+
+displaySubjects();
+
+updateOverallProgress();
+
+firstVisit();
+
+</script>
+
+</body>
+</html>
