@@ -1,0 +1,3299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basic 9 AI Class</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#f4eadc;
+    color:#3d2415;
+    transition:background .4s,color .4s;
+}
+
+body.dark{
+    background:#17110d;
+    color:#fff;
+}
+
+/* HEADER */
+
+header{
+    background:#6f3e20;
+    color:white;
+    padding:20px;
+    text-align:center;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+
+header h1{
+    font-size:30px;
+    margin-bottom:15px;
+    text-transform:lowercase;
+}
+
+nav{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+button{
+    background:#8b4513;
+    color:white;
+    border:none;
+    padding:11px 16px;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:14px;
+    transition:.25s;
+}
+
+button:hover{
+    background:#542b13;
+    transform:translateY(-2px);
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+    transform:none;
+}
+
+body.dark button{
+    background:#b97945;
+    color:#1d130d;
+}
+
+/* MAIN */
+
+main{
+    max-width:1200px;
+    margin:auto;
+    padding:30px 25px;
+}
+
+/* FADE SCREEN SYSTEM */
+
+.screen{
+    display:none;
+    opacity:0;
+}
+
+.screen.active{
+    display:block;
+    animation:screenFade .55s ease forwards;
+}
+
+.screen.fade-out{
+    animation:screenFadeOut .25s ease forwards;
+}
+
+@keyframes screenFade{
+    from{
+        opacity:0;
+        transform:translateY(18px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes screenFadeOut{
+    from{
+        opacity:1;
+        transform:translateY(0);
+    }
+    to{
+        opacity:0;
+        transform:translateY(-10px);
+    }
+}
+
+/* CONTENT ANIMATION */
+
+.subject-card,
+.topic-card,
+.lesson-container,
+.exercise-box,
+.ai-box,
+.exam-question,
+.progress-box{
+    animation:cardFade .6s ease;
+}
+
+@keyframes cardFade{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* WELCOME */
+
+.welcome{
+    text-align:center;
+    padding:30px 10px;
+}
+
+.welcome h2{
+    font-size:30px;
+    margin-bottom:12px;
+    color:#6f3e20;
+}
+
+body.dark .welcome h2{
+    color:#e6a66d;
+}
+
+.welcome p{
+    font-size:17px;
+    line-height:1.7;
+}
+
+/* PROGRESS */
+
+.progress-box{
+    background:#ead5bd;
+    padding:22px;
+    border-radius:12px;
+    margin-bottom:25px;
+}
+
+body.dark .progress-box{
+    background:#30231b;
+}
+
+.progress-bar{
+    width:100%;
+    height:20px;
+    background:#c5a98c;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:12px;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:#6f3e20;
+    transition:width .7s ease;
+    color:white;
+    text-align:center;
+    font-size:12px;
+    line-height:20px;
+}
+
+body.dark .progress-fill{
+    background:#b97945;
+}
+
+/* INPUTS */
+
+.search-box{
+    margin-bottom:25px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:13px;
+    border:1px solid #b9855d;
+    border-radius:8px;
+    margin:8px 0 18px;
+    font-size:16px;
+    background:white;
+    color:#2d1b10;
+}
+
+textarea{
+    resize:vertical;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea{
+    background:#2b211b;
+    color:white;
+    border-color:#b97945;
+}
+
+/* SUBJECTS */
+
+.subject-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:18px;
+}
+
+.subject-card{
+    background:#fffaf3;
+    border:1px solid #d5b89a;
+    border-radius:12px;
+    padding:22px;
+    box-shadow:0 3px 8px rgba(80,40,10,.12);
+    transition:.25s;
+}
+
+.subject-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 8px 18px rgba(80,40,10,.18);
+}
+
+body.dark .subject-card{
+    background:#2a201a;
+    border-color:#6f4a32;
+}
+
+.subject-card h3{
+    color:#6f3e20;
+    margin-bottom:10px;
+    font-size:20px;
+}
+
+body.dark .subject-card h3{
+    color:#e6a66d;
+}
+
+.subject-card p{
+    margin-bottom:14px;
+    line-height:1.6;
+}
+
+/* TOPICS */
+
+.topic-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.topic-card{
+    background:#fffaf3;
+    border:1px solid #d5b89a;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 7px rgba(80,40,10,.08);
+    transition:.25s;
+}
+
+.topic-card:hover{
+    transform:translateY(-4px);
+}
+
+body.dark .topic-card{
+    background:#2a201a;
+    border-color:#6f4a32;
+}
+
+.topic-card h3{
+    color:#6f3e20;
+    margin-bottom:10px;
+}
+
+body.dark .topic-card h3{
+    color:#e6a66d;
+}
+
+.topic-card p{
+    line-height:1.65;
+    margin-bottom:13px;
+}
+
+.completed{
+    border:3px solid #3b8b4b;
+}
+
+/* LESSON */
+
+.lesson-container{
+    background:#fffaf3;
+    padding:30px;
+    border-radius:12px;
+    line-height:1.85;
+    box-shadow:0 3px 10px rgba(80,40,10,.1);
+}
+
+body.dark .lesson-container{
+    background:#2a201a;
+}
+
+.lesson-container h2{
+    color:#6f3e20;
+    margin-bottom:15px;
+    font-size:28px;
+}
+
+body.dark .lesson-container h2{
+    color:#e6a66d;
+}
+
+.lesson-container h3{
+    margin-top:25px;
+    margin-bottom:10px;
+    color:#8b4513;
+}
+
+body.dark .lesson-container h3{
+    color:#e6a66d;
+}
+
+.lesson-container p{
+    margin-bottom:15px;
+}
+
+.lesson-container ul,
+.lesson-container ol{
+    margin:10px 0 18px 25px;
+}
+
+.lesson-container li{
+    margin-bottom:8px;
+}
+
+.example{
+    background:#f0dfc9;
+    padding:18px;
+    border-left:5px solid #8b4513;
+    border-radius:7px;
+    margin:18px 0;
+}
+
+body.dark .example{
+    background:#39291f;
+}
+
+.key-point{
+    background:#ead5bd;
+    padding:18px;
+    border-left:5px solid #6f3e20;
+    border-radius:7px;
+    margin:18px 0;
+}
+
+body.dark .key-point{
+    background:#30231b;
+}
+
+/* EXERCISE */
+
+.exercise-box{
+    background:#f0dfc9;
+    padding:22px;
+    border-radius:10px;
+    margin-top:25px;
+}
+
+body.dark .exercise-box{
+    background:#39291f;
+}
+
+.exercise-box h3{
+    color:#6f3e20;
+    margin-bottom:12px;
+}
+
+body.dark .exercise-box h3{
+    color:#e6a66d;
+}
+
+.exercise-result{
+    margin-top:15px;
+    line-height:1.6;
+}
+
+/* NAVIGATION */
+
+.navigation-buttons{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:25px;
+}
+
+/* AI */
+
+.ai-box{
+    background:#fffaf3;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 3px 9px rgba(80,40,10,.1);
+}
+
+body.dark .ai-box{
+    background:#2a201a;
+}
+
+.ai-box h2{
+    color:#6f3e20;
+    margin-bottom:12px;
+}
+
+body.dark .ai-box h2{
+    color:#e6a66d;
+}
+
+.ai-result{
+    margin-top:20px;
+    padding:25px;
+    background:#fff8ed;
+    border-left:6px solid #8b4513;
+    border-radius:10px;
+    line-height:1.8;
+    white-space:pre-line;
+    min-height:180px;
+}
+
+body.dark .ai-result{
+    background:#30251e;
+    color:white;
+}
+
+/* EXAM */
+
+.exam-question{
+    background:#fffaf3;
+    padding:25px;
+    border-radius:12px;
+    margin-top:20px;
+}
+
+body.dark .exam-question{
+    background:#2a201a;
+}
+
+.exam-question h3{
+    color:#6f3e20;
+    margin-bottom:15px;
+}
+
+body.dark .exam-question h3{
+    color:#e6a66d;
+}
+
+.score-box{
+    background:#d7efda;
+    color:#174d22;
+    padding:25px;
+    border-radius:12px;
+    margin-top:20px;
+    line-height:1.8;
+}
+
+/* OTHER */
+
+.info{
+    background:#f0dfc9;
+    padding:15px;
+    border-left:5px solid #8b4513;
+    border-radius:7px;
+    margin-bottom:20px;
+    line-height:1.6;
+}
+
+body.dark .info{
+    background:#39291f;
+}
+
+.success{
+    color:#28763a;
+    font-weight:bold;
+}
+
+.warning{
+    color:#a32121;
+    font-weight:bold;
+}
+
+.back-button{
+    margin-bottom:20px;
+}
+
+footer{
+    text-align:center;
+    padding:30px;
+    margin-top:30px;
+    color:#6f3e20;
+}
+
+body.dark footer{
+    color:#e6a66d;
+}
+
+.hidden{
+    display:none;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    header h1{
+        font-size:23px;
+    }
+
+    main{
+        padding:15px;
+    }
+
+    .lesson-container{
+        padding:18px;
+    }
+
+    .lesson-container h2{
+        font-size:23px;
+    }
+
+    .navigation-buttons{
+        flex-direction:column;
+    }
+
+    button{
+        width:100%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<h1>welcome to basic 9 academy 📊 </h1>
+
+<nav>
+<button onclick="showHome()">Home</button>
+<button onclick="toggleDarkMode()">Dark Mode</button>
+<button onclick="changeName()">Change Name</button>
+<button onclick="showAITeacher()">AI Teacher</button>
+<button onclick="showRevision()">Revision</button>
+<button onclick="showMockExam()">Mock Exam</button>
+<button onclick="resetWebsite()">Reset</button>
+</nav>
+
+</header>
+
+
+<main>
+
+<!-- HOME -->
+
+<section id="homeScreen" class="screen active">
+
+<div class="welcome">
+
+<h2 id="welcomeText">
+Welcome to Basic 9 academy 📊
+</h2>
+
+<p>
+Your complete Basic 9 learning centre.
+Choose a subject, open a topic, study the lesson,
+answer the exercise and track your progress.
+</p>
+
+</div>
+
+
+<div class="progress-box">
+
+<h3>Overall Learning Progress</h3>
+
+<p id="progressText">
+0 of 169 lessons completed
+</p>
+
+<div class="progress-bar">
+<div id="progressFill" class="progress-fill">
+0%
+</div>
+</div>
+
+</div>
+
+
+<div class="search-box">
+
+<h2>Find a Subject</h2>
+
+<input
+id="subjectSearch"
+type="text"
+placeholder="Search for a subject..."
+oninput="searchSubjects()"
+>
+
+</div>
+
+
+<div id="subjectGrid" class="subject-grid"></div>
+
+</section>
+
+
+<!-- SUBJECT -->
+
+<section id="subjectScreen" class="screen">
+
+<button class="back-button" onclick="showHome()">
+← Back to Home
+</button>
+
+<div class="welcome">
+
+<h2 id="subjectTitle"></h2>
+
+<p>
+This subject contains 13 learning topics.
+Open a topic below to read the full lesson.
+</p>
+
+</div>
+
+<div id="topicList" class="topic-list"></div>
+
+</section>
+
+
+<!-- LESSON -->
+
+<section id="lessonScreen" class="screen">
+
+<button class="back-button" onclick="goBackToSubject()">
+← Back to Subject
+</button>
+
+<div id="lessonContainer" class="lesson-container"></div>
+
+<div class="navigation-buttons">
+
+<button id="previousBtn" onclick="previousLesson()">
+← Previous Lesson
+</button>
+
+<button onclick="completeLesson()">
+✓ Complete Lesson
+</button>
+
+<button id="nextBtn" onclick="nextLesson()">
+Next Lesson →
+</button>
+
+</div>
+
+</section>
+
+
+<!-- AI TEACHER -->
+
+<section id="aiScreen" class="screen">
+
+<div class="ai-box">
+
+<h2>AI Teacher</h2>
+
+<p>
+Choose a subject and type the topic you want the AI Teacher
+to explain.
+</p>
+
+<select id="aiSubject"></select>
+
+<input
+id="aiTopic"
+type="text"
+placeholder="Example: Quadratic Equations"
+>
+
+<button onclick="askAITeacher()">
+Ask AI Teacher
+</button>
+
+<div id="aiResult" class="ai-result">
+Your explanation will appear here.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- REVISION -->
+
+<section id="revisionScreen" class="screen">
+
+<div class="ai-box">
+
+<h2>Revision Centre</h2>
+
+<p>
+Choose a subject and topic to receive a simple revision
+explanation with key points and examination advice.
+</p>
+
+<select id="revisionSubject"></select>
+
+<input
+id="revisionTopic"
+type="text"
+placeholder="Example: Number Base System"
+>
+
+<button onclick="startRevision()">
+Start Revision
+</button>
+
+<div id="revisionResult" class="ai-result">
+Your revision will appear here.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MOCK EXAM -->
+
+<section id="examScreen" class="screen">
+
+<div class="ai-box">
+
+<h2>Basic 9 Mock Examination</h2>
+
+<p>
+Select a subject and practise 120 questions.
+</p>
+
+<select id="examSubject"></select>
+
+<button onclick="startMockExam()">
+Start 120 Questions
+</button>
+
+<div id="examArea"></div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+<p>
+    &copy; 2026 AI Class. All Rights Reserved.
+</p>
+
+</footer>
+
+</main>
+
+
+<script>
+
+/* =========================================================
+SUBJECTS
+========================================================= */
+
+const subjects={
+
+"Mathematics":[
+"Number Base System",
+"Modular Arithmetic",
+"Logarithms",
+"Sets",
+"Simple Equations and Variations",
+"Quadratic Equations",
+"Logical Reasoning",
+"Constructions",
+"Basic Geometric Proofs",
+"Trigonometric Ratios",
+"Mensuration",
+"Data Presentation",
+"Statistics"
+],
+
+"English Studies":[
+"Parts of Speech",
+"Nouns",
+"Pronouns",
+"Verbs",
+"Adjectives",
+"Adverbs",
+"Prepositions",
+"Conjunctions",
+"Sentence Structure",
+"Comprehension",
+"Summary Writing",
+"Letter Writing",
+"Figures of Speech"
+],
+
+"Basic Science":[
+"Living Things",
+"Cells",
+"Human Body",
+"Nutrition",
+"Reproduction",
+"Respiration",
+"Photosynthesis",
+"Energy",
+"Matter",
+"Force",
+"Electricity",
+"Heat",
+"Environment"
+],
+
+"Social Studies":[
+"Family",
+"Culture",
+"Socialisation",
+"Community",
+"Leadership",
+"Values",
+"Conflict",
+"Peace",
+"Population",
+"Migration",
+"Transportation",
+"Communication",
+"Globalisation"
+],
+
+"Computer Studies":[
+"Computer Basics",
+"Computer Hardware",
+"Computer Software",
+"Operating Systems",
+"Input Devices",
+"Output Devices",
+"Storage Devices",
+"Internet",
+"Cyber Safety",
+"Programming",
+"Algorithms",
+"Artificial Intelligence",
+"Computer Ethics"
+],
+
+"Basic Technology":[
+"Technology",
+"Workshop Safety",
+"Tools",
+"Woodwork",
+"Metalwork",
+"Technical Drawing",
+"Building",
+"Electricity",
+"Electronics",
+"Machines",
+"Energy",
+"Maintenance",
+"Technology and Society"
+],
+
+"Civic Education":[
+"Citizenship",
+"Rights",
+"Duties",
+"Responsibilities",
+"Democracy",
+"Rule of Law",
+"Human Rights",
+"National Values",
+"Leadership",
+"Political Participation",
+"Corruption",
+"National Unity",
+"Good Governance"
+],
+
+"Christian Religious Studies":[
+"Creation",
+"The Fall of Man",
+"Noah",
+"Abraham",
+"Moses",
+"David",
+"The Prophets",
+"Birth of Jesus",
+"Teachings of Jesus",
+"Miracles",
+"Death of Jesus",
+"Resurrection",
+"Christian Living"
+],
+
+"Islamic Religious Studies":[
+"Islam",
+"Articles of Faith",
+"Five Pillars",
+"Prayer",
+"Fasting",
+"Zakat",
+"Hajj",
+"Prophet Muhammad",
+"Quran",
+"Hadith",
+"Good Character",
+"Peace",
+"Islamic Brotherhood"
+],
+
+"Physical and Health Education":[
+"Physical Fitness",
+"Exercise",
+"Athletics",
+"Football",
+"Basketball",
+"Volleyball",
+"Gymnastics",
+"Swimming",
+"Nutrition",
+"Personal Hygiene",
+"First Aid",
+"Safety",
+"Healthy Living"
+],
+
+"Creative Arts":[
+"Drawing",
+"Painting",
+"Colour",
+"Design",
+"Craft",
+"Sculpture",
+"Drama",
+"Music",
+"Dance",
+"Photography",
+"Textiles",
+"Art Appreciation",
+"Nigerian Art"
+],
+
+"Agricultural Science":[
+"Agriculture",
+"Soil",
+"Soil Fertility",
+"Crops",
+"Crop Production",
+"Pests",
+"Diseases",
+"Livestock",
+"Animal Nutrition",
+"Animal Health",
+"Farm Tools",
+"Farm Management",
+"Agricultural Marketing"
+],
+
+"Home Economics":[
+"Home Economics",
+"Food",
+"Nutrition",
+"Meal Planning",
+"Cooking",
+"Food Preservation",
+"Clothing",
+"Textiles",
+"Sewing",
+"Home Management",
+"Consumer Education",
+"Child Development",
+"Family Relationships"
+]
+
+};
+
+
+/* =========================================================
+LONG LESSON DATABASE
+========================================================= */
+
+const lessons={};
+
+
+/* ---------- MATHEMATICS ---------- */
+
+lessons["Mathematics|Number Base System"]=`
+<h3>Introduction</h3>
+<p>
+A number base system is a method of representing numbers using a particular
+set of digits. The decimal system that we normally use is called base 10
+because it has ten digits: 0, 1, 2, 3, 4, 5, 6, 7, 8 and 9.
+</p>
+
+<h3>Binary Number System</h3>
+<p>
+The binary system is base 2. It uses only two digits: 0 and 1.
+Computers use binary because electronic circuits can conveniently represent
+two states, such as off and on.
+</p>
+
+<div class="example">
+<strong>Example:</strong><br>
+Convert 1101₂ to decimal.<br><br>
+1101₂ = (1×2³) + (1×2²) + (0×2¹) + (1×2⁰)<br>
+= 8 + 4 + 0 + 1<br>
+= <strong>13₁₀</strong>
+</div>
+
+<h3>Converting Decimal to Binary</h3>
+<p>
+To convert a decimal number to binary, divide the number repeatedly by 2.
+Record each remainder. When the divisions are complete, read the remainders
+from the bottom upwards.
+</p>
+
+<h3>Why Number Bases Are Important</h3>
+<ul>
+<li>Binary is used internally by digital computers.</li>
+<li>Different bases are useful in computing and electronics.</li>
+<li>Understanding place value helps us convert between bases.</li>
+</ul>
+
+<div class="key-point">
+<strong>Remember:</strong> Base 10 uses digits 0–9, while base 2 uses only
+0 and 1.
+</div>
+`;
+
+
+lessons["Mathematics|Modular Arithmetic"]=`
+<h3>Meaning of Modular Arithmetic</h3>
+<p>
+Modular arithmetic is mathematics based on remainders. Instead of being
+mainly interested in the complete quotient of a division, we concentrate
+on the remainder.
+</p>
+
+<div class="example">
+<strong>Example:</strong><br>
+37 ÷ 6 = 6 remainder 1.<br>
+Therefore:<br>
+<strong>37 mod 6 = 1</strong>
+</div>
+
+<h3>More Examples</h3>
+<p>
+25 mod 4 = 1 because 25 divided by 4 leaves a remainder of 1.
+</p>
+
+<p>
+30 mod 5 = 0 because 30 divides exactly by 5.
+</p>
+
+<h3>Real-Life Applications</h3>
+<ul>
+<li>Clock calculations.</li>
+<li>Repeating schedules.</li>
+<li>Computer programming.</li>
+<li>Checking patterns.</li>
+<li>Digital systems.</li>
+</ul>
+
+<h3>Clock Example</h3>
+<p>
+A clock repeats after 12 hours. If it is 10 o'clock and we add 5 hours,
+we get 15 o'clock mathematically, but a 12-hour clock shows 3 o'clock.
+This repeating behaviour is closely related to modular arithmetic.
+</p>
+
+<div class="key-point">
+<strong>Remember:</strong> The word "mod" usually asks you to find the
+remainder after division.
+</div>
+`;
+
+
+lessons["Mathematics|Logarithms"]=`
+<h3>What Is a Logarithm?</h3>
+<p>
+A logarithm is the inverse of an exponent. It tells us the power to which
+a base must be raised to produce a particular number.
+</p>
+
+<div class="example">
+If 2⁵ = 32, then:<br><br>
+<strong>log₂32 = 5</strong>
+</div>
+
+<h3>Basic Relationship</h3>
+<p>
+If:
+</p>
+
+<p>
+aˣ = b
+</p>
+
+<p>
+then:
+</p>
+
+<p>
+logₐb = x
+</p>
+
+<h3>Examples</h3>
+
+<div class="example">
+10³ = 1000<br>
+Therefore:<br>
+log₁₀1000 = 3.
+</div>
+
+<div class="example">
+3² = 9<br>
+Therefore:<br>
+log₃9 = 2.
+</div>
+
+<h3>Important Laws</h3>
+<ul>
+<li>log(ab) = log a + log b</li>
+<li>log(a/b) = log a − log b</li>
+<li>log(aⁿ) = n log a</li>
+</ul>
+
+<h3>Why Logarithms Matter</h3>
+<p>
+Logarithms are useful for solving equations involving very large or very
+small numbers and quantities involving powers.
+</p>
+
+<div class="key-point">
+<strong>Easy way to remember:</strong> A logarithm asks,
+"What power gives me this number?"
+</div>
+`;
+
+
+lessons["Mathematics|Sets"]=`
+<h3>Meaning of a Set</h3>
+<p>
+A set is a well-defined collection of objects. The objects inside a set
+are called elements or members.
+</p>
+
+<div class="example">
+A = {1,2,3,4,5}
+</div>
+
+<p>
+The numbers 1, 2, 3, 4 and 5 are elements of set A.
+</p>
+
+<h3>Union of Sets</h3>
+<p>
+The union contains every element belonging to either set, without repeating
+an element.
+</p>
+
+<div class="example">
+A = {1,2,3}<br>
+B = {3,4,5}<br><br>
+A ∪ B = {1,2,3,4,5}
+</div>
+
+<h3>Intersection of Sets</h3>
+<p>
+The intersection contains elements common to both sets.
+</p>
+
+<div class="example">
+A ∩ B = {3}
+</div>
+
+<h3>Venn Diagrams</h3>
+<p>
+A Venn diagram uses circles to show relationships between sets. The
+overlapping part normally represents the intersection.
+</p>
+
+<div class="key-point">
+<strong>Remember:</strong> Union means combine. Intersection means common
+elements.
+</div>
+`;
+
+
+lessons["Mathematics|Simple Equations and Variations"]=`
+<h3>Simple Equations</h3>
+<p>
+An equation is a mathematical statement showing that two expressions are
+equal. The equality sign means that both sides have the same value.
+</p>
+
+<div class="example">
+x + 7 = 15<br><br>
+Subtract 7 from both sides:<br>
+x = 8.
+</div>
+
+<h3>Another Example</h3>
+
+<div class="example">
+3x = 18<br><br>
+Divide both sides by 3:<br>
+x = 6.
+</div>
+
+<h3>Direct Variation</h3>
+<p>
+Two quantities vary directly when an increase in one produces a proportional
+increase in the other.
+</p>
+
+<p>
+It can be represented as:
+</p>
+
+<p>
+y = kx
+</p>
+
+<p>
+where k is the constant of variation.
+</p>
+
+<h3>Inverse Variation</h3>
+<p>
+In inverse variation, when one quantity increases, the other decreases in
+such a way that their product remains constant.
+</p>
+
+<div class="key-point">
+<strong>Remember:</strong> Always perform the same operation on both sides
+of an equation.
+</div>
+`;
+
+
+lessons["Mathematics|Quadratic Equations"]=`
+<h3>Meaning</h3>
+<p>
+A quadratic equation is an equation in which the highest power of the
+unknown is 2.
+</p>
+
+<p>
+The general form is:
+</p>
+
+<div class="example">
+ax² + bx + c = 0
+</div>
+
+<p>
+where a is not equal to zero.
+</p>
+
+<h3>Factorisation</h3>
+
+<div class="example">
+x² + 5x + 6 = 0<br><br>
+Find two numbers whose product is 6 and whose sum is 5.<br>
+The numbers are 2 and 3.<br><br>
+(x + 2)(x + 3) = 0<br><br>
+Therefore:<br>
+x = −2 or x = −3.
+</div>
+
+<h3>Quadratic Formula</h3>
+
+<div class="example">
+x = (-b ± √(b² − 4ac)) / 2a
+</div>
+
+<p>
+The formula can be used when factorisation is difficult or does not work
+easily.
+</p>
+
+<h3>Checking an Answer</h3>
+<p>
+One good way to check a solution is to substitute the answer back into the
+original equation.
+</p>
+`;
+
+
+lessons["Mathematics|Logical Reasoning"]=`
+<h3>Meaning</h3>
+<p>
+Logical reasoning is the process of using facts, evidence and rules to
+arrive at a sensible conclusion.
+</p>
+
+<h3>Example</h3>
+
+<div class="example">
+All mammals breathe air.<br>
+A dog is a mammal.<br>
+Therefore, a dog breathes air.
+</div>
+
+<p>
+The first statement gives a general fact. The second identifies the dog as
+a member of that group. The conclusion follows logically from the two facts.
+</p>
+
+<h3>Good Reasoning</h3>
+<ul>
+<li>Use correct information.</li>
+<li>Separate facts from assumptions.</li>
+<li>Make sure the conclusion follows from the evidence.</li>
+<li>Consider alternative explanations.</li>
+</ul>
+
+<h3>Importance</h3>
+<p>
+Logical reasoning is useful in mathematics, science, programming, decision
+making and everyday life.
+</p>
+`;
+
+
+lessons["Mathematics|Constructions"]=`
+<h3>Meaning</h3>
+<p>
+Geometric construction is the accurate creation of lines, angles and shapes
+using mathematical instruments such as a ruler and compass.
+</p>
+
+<h3>Important Constructions</h3>
+<ul>
+<li>Perpendicular bisector of a line.</li>
+<li>Angle bisector.</li>
+<li>Construction of triangles.</li>
+<li>Construction of standard angles.</li>
+</ul>
+
+<h3>Perpendicular Bisector</h3>
+<p>
+A perpendicular bisector divides a line segment into two equal parts and
+crosses it at an angle of 90 degrees.
+</p>
+
+<h3>Angle Bisector</h3>
+<p>
+An angle bisector divides an angle into two equal angles.
+</p>
+
+<div class="key-point">
+Accuracy is important. Construction lines should be made carefully using
+the correct instruments.
+</div>
+`;
+
+
+lessons["Mathematics|Basic Geometric Proofs"]=`
+<h3>Meaning of a Proof</h3>
+<p>
+A geometric proof is a logical sequence of statements used to demonstrate
+that a mathematical result is true.
+</p>
+
+<h3>Example: Angles in a Triangle</h3>
+<p>
+The three interior angles of every triangle add up to 180 degrees.
+</p>
+
+<div class="example">
+If two angles are 60° and 70°:<br><br>
+Third angle = 180° − 60° − 70°<br>
+= <strong>50°</strong>
+</div>
+
+<h3>How Proofs Work</h3>
+<ol>
+<li>State what is known.</li>
+<li>Use an appropriate mathematical property.</li>
+<li>Show each logical step.</li>
+<li>Reach the required conclusion.</li>
+</ol>
+`;
+
+
+lessons["Mathematics|Trigonometric Ratios"]=`
+<h3>Introduction</h3>
+<p>
+Trigonometry deals with relationships between the sides and angles of
+triangles. In Basic 9, we mainly use right-angled triangles.
+</p>
+
+<h3>SOH-CAH-TOA</h3>
+
+<div class="example">
+SOH: sin θ = Opposite / Hypotenuse<br><br>
+CAH: cos θ = Adjacent / Hypotenuse<br><br>
+TOA: tan θ = Opposite / Adjacent
+</div>
+
+<h3>Understanding the Sides</h3>
+<ul>
+<li>The hypotenuse is opposite the right angle.</li>
+<li>The opposite side is opposite the chosen angle.</li>
+<li>The adjacent side touches the chosen angle but is not the hypotenuse.</li>
+</ul>
+
+<h3>Solving Problems</h3>
+<p>
+First identify the known side, unknown side and angle. Then select the
+ratio containing the sides you need.
+</p>
+
+<div class="key-point">
+Always identify the angle before deciding which side is opposite and which
+is adjacent.
+</div>
+`;
+
+
+lessons["Mathematics|Mensuration"]=`
+<h3>Meaning</h3>
+<p>
+Mensuration deals with measurement of length, perimeter, area, surface
+area and volume.
+</p>
+
+<h3>Important Formulas</h3>
+
+<div class="example">
+Rectangle:<br>
+Area = length × width<br><br>
+
+Triangle:<br>
+Area = ½ × base × height<br><br>
+
+Circle:<br>
+Area = πr²<br>
+Circumference = 2πr<br><br>
+
+Cuboid:<br>
+Volume = length × width × height
+</div>
+
+<h3>Units</h3>
+<p>
+Length is measured in units such as centimetres and metres.
+Area uses square units such as cm² and m².
+Volume uses cubic units such as cm³ and m³.
+</p>
+
+<div class="key-point">
+Read the question carefully and make sure the final answer has the correct
+unit.
+</div>
+`;
+
+
+lessons["Mathematics|Data Presentation"]=`
+<h3>Meaning</h3>
+<p>
+Data presentation is the process of arranging information in a form that
+makes it easier to understand, compare and interpret.
+</p>
+
+<h3>Common Forms</h3>
+<ul>
+<li>Tables</li>
+<li>Bar charts</li>
+<li>Pie charts</li>
+<li>Line graphs</li>
+<li>Histograms</li>
+</ul>
+
+<h3>Bar Chart</h3>
+<p>
+A bar chart is useful for comparing different categories. The bars should
+be labelled clearly and the scale should be consistent.
+</p>
+
+<h3>Line Graph</h3>
+<p>
+A line graph is useful for showing how something changes over time.
+</p>
+
+<h3>Pie Chart</h3>
+<p>
+A pie chart represents a whole as a circle divided into sectors.
+</p>
+`;
+
+
+lessons["Mathematics|Statistics"]=`
+<h3>Meaning</h3>
+<p>
+Statistics involves collecting, organising, analysing and interpreting
+data so that useful conclusions can be made.
+</p>
+
+<h3>Mean</h3>
+<p>
+The mean is found by adding all the values and dividing by the number of
+values.
+</p>
+
+<div class="example">
+2, 3, 3, 5, 7<br><br>
+Mean = (2+3+3+5+7) ÷ 5<br>
+= 20 ÷ 5<br>
+= 4
+</div>
+
+<h3>Median</h3>
+<p>
+The median is the middle value after the data has been arranged in order.
+</p>
+
+<h3>Mode</h3>
+<p>
+The mode is the value that occurs most frequently.
+</p>
+
+<div class="key-point">
+Mean = average. Median = middle. Mode = most frequent.
+</div>
+`;
+
+
+/* =========================================================
+OTHER SUBJECT LESSONS
+========================================================= */
+
+const detailedDefinitions={
+
+"English Studies":{
+
+"Parts of Speech":`
+<p>Parts of speech are categories that describe the jobs words perform in sentences.</p>
+<p>The main categories include nouns, pronouns, verbs, adjectives, adverbs, prepositions, conjunctions and interjections.</p>
+<div class="example"><strong>Example:</strong> The intelligent student answered the question quickly.</div>
+<p>"Student" is a noun, "intelligent" is an adjective, "answered" is a verb and "quickly" is an adverb.</p>
+<p>Understanding parts of speech helps you construct correct sentences and improves both speaking and writing.</p>`,
+
+"Nouns":`
+<p>A noun is a word used to name a person, place, animal, thing or idea.</p>
+<p>Examples include teacher, Nigeria, dog, school, table, honesty and freedom.</p>
+<h3>Types of Nouns</h3>
+<ul><li>Proper nouns</li><li>Common nouns</li><li>Abstract nouns</li><li>Collective nouns</li><li>Concrete nouns</li></ul>
+<div class="example">Lagos is a proper noun, while city is a common noun.</div>
+<p>Proper nouns normally begin with capital letters.</p>`,
+
+"Pronouns":`
+<p>A pronoun is a word used in place of a noun so that sentences do not become unnecessarily repetitive.</p>
+<div class="example">Chinedu went home because he was tired.</div>
+<p>The word "he" replaces the noun Chinedu.</p>
+<h3>Examples</h3>
+<p>I, you, he, she, it, we, they, me, him, her, us and them are pronouns.</p>
+<p>Correct use of pronouns makes writing clearer and more natural.</p>`,
+
+"Verbs":`
+<p>A verb expresses an action, occurrence or state.</p>
+<div class="example">Examples: run, write, think, eat, sleep, become, is, are.</div>
+<p>Some verbs show physical actions while others describe conditions or states.</p>
+<p>Verbs can change according to tense. For example: walk, walked and will walk.</p>`,
+
+"Adjectives":`
+<p>An adjective describes or gives more information about a noun or pronoun.</p>
+<div class="example">The <strong>bright</strong> student carried a <strong>heavy</strong> bag.</div>
+<p>Bright describes the student, while heavy describes the bag.</p>
+<p>Adjectives can describe colour, size, quality, quantity, age and many other features.</p>`,
+
+"Adverbs":`
+<p>An adverb gives more information about a verb, adjective or another adverb.</p>
+<p>It can tell us how, when, where or how often something happens.</p>
+<div class="example">She sang beautifully.</div>
+<p>The word beautifully tells us how she sang.</p>
+<div class="example">He arrived yesterday.</div>
+<p>Yesterday tells us when he arrived.</p>`,
+
+"Prepositions":`
+<p>A preposition shows a relationship between a noun or pronoun and another part of a sentence.</p>
+<p>Examples include in, on, under, beside, between, behind, through and across.</p>
+<div class="example">The book is <strong>on</strong> the table.</div>
+<p>The preposition "on" shows the relationship between the book and the table.</p>`,
+
+"Conjunctions":`
+<p>Conjunctions join words, phrases or clauses.</p>
+<p>Common conjunctions include and, but, or, because, although, while and if.</p>
+<div class="example">I wanted to play, <strong>but</strong> it was raining.</div>
+<p>The conjunction but connects two ideas that contrast with each other.</p>`,
+
+"Sentence Structure":`
+<p>Sentence structure refers to how words and clauses are organised to create meaningful sentences.</p>
+<h3>Simple Sentence</h3>
+<p>A simple sentence contains one main clause.</p>
+<div class="example">The boy ran.</div>
+<h3>Compound Sentence</h3>
+<p>A compound sentence joins independent clauses, often using a conjunction.</p>
+<div class="example">The boy ran and the girl walked.</div>
+<h3>Complex Sentence</h3>
+<p>A complex sentence contains a main clause and at least one dependent clause.</p>`,
+
+"Comprehension":`
+<p>Comprehension means understanding what you read.</p>
+<h3>Good Comprehension Method</h3>
+<ol>
+<li>Read the passage carefully.</li>
+<li>Identify the main idea.</li>
+<li>Look for supporting details.</li>
+<li>Study unfamiliar words from their context.</li>
+<li>Answer questions using evidence from the passage.</li>
+</ol>
+<p>Do not simply copy large sections of a passage when a short, direct answer is required.</p>`,
+
+"Summary Writing":`
+<p>Summary writing involves reducing a longer passage to its important ideas without changing the main meaning.</p>
+<h3>Steps</h3>
+<ol>
+<li>Read the passage carefully.</li>
+<li>Identify the main points.</li>
+<li>Remove examples and unnecessary repetition.</li>
+<li>Use your own words where appropriate.</li>
+<li>Write clearly and briefly.</li>
+</ol>`,
+
+"Letter Writing":`
+<p>Letters may be formal or informal depending on the person being addressed and the purpose of the letter.</p>
+<h3>Formal Letter</h3>
+<p>A formal letter is used for official communication, such as writing to a school, company or government organisation.</p>
+<h3>Informal Letter</h3>
+<p>An informal letter is normally written to someone you know personally.</p>
+<p>The tone, format and language should match the type of letter.</p>`,
+
+"Figures of Speech":`
+<p>Figures of speech are special ways of using words to make communication more vivid, interesting or expressive.</p>
+<h3>Simile</h3>
+<p>A simile compares two things using words such as "like" or "as".</p>
+<div class="example">He is as brave as a lion.</div>
+<h3>Metaphor</h3>
+<p>A metaphor makes a direct comparison.</p>
+<div class="example">The classroom was a zoo.</div>
+<h3>Personification</h3>
+<p>Personification gives human qualities to non-human things.</p>`
+},
+
+
+"Basic Science":{
+
+"Living Things":`
+<p>Living things are organisms that perform life processes.</p>
+<h3>Major Characteristics</h3>
+<ul>
+<li>Movement</li>
+<li>Respiration</li>
+<li>Sensitivity</li>
+<li>Growth</li>
+<li>Reproduction</li>
+<li>Excretion</li>
+<li>Nutrition</li>
+</ul>
+<p>Plants and animals are living things, although they perform some life processes differently.</p>`,
+
+"Cells":`
+<p>The cell is the basic structural and functional unit of life.</p>
+<h3>Animal Cell</h3>
+<p>Animal cells contain structures such as the cell membrane, cytoplasm and nucleus.</p>
+<h3>Plant Cell</h3>
+<p>Plant cells also have structures such as a cell wall, chloroplasts and a large permanent vacuole.</p>
+<p>Different cell structures perform different jobs.</p>`,
+
+"Human Body":`
+<p>The human body is made up of organs and organ systems that work together.</p>
+<h3>Examples</h3>
+<ul>
+<li>Digestive system processes food.</li>
+<li>Respiratory system helps exchange gases.</li>
+<li>Circulatory system transports substances.</li>
+<li>Nervous system coordinates responses.</li>
+<li>Skeletal system supports the body.</li>
+</ul>
+<p>The systems depend on one another to keep the body functioning properly.</p>`,
+
+"Nutrition":`
+<p>Nutrition is concerned with how organisms obtain and use nutrients.</p>
+<h3>Major Nutrients</h3>
+<ul>
+<li>Carbohydrates provide energy.</li>
+<li>Proteins help growth and repair.</li>
+<li>Fats provide energy and help with insulation.</li>
+<li>Vitamins support body processes.</li>
+<li>Minerals are required for many body functions.</li>
+<li>Water is essential for normal body processes.</li>
+<li>Fibre supports healthy digestion.</li>
+</ul>`,
+
+"Reproduction":`
+<p>Reproduction is the process by which living organisms produce new organisms.</p>
+<p>Sexual reproduction generally involves genetic material from two parents, while asexual reproduction can involve one parent.</p>
+<p>Reproduction ensures the continuation of species.</p>`,
+
+"Respiration":`
+<p>Respiration is the process through which cells release usable energy from food.</p>
+<h3>Aerobic Respiration</h3>
+<p>Aerobic respiration uses oxygen.</p>
+<div class="example">Glucose + Oxygen → Carbon dioxide + Water + Energy</div>
+<p>The released energy is used for activities such as movement, growth and maintaining body functions.</p>`,
+
+"Photosynthesis":`
+<p>Photosynthesis is the process by which green plants manufacture food using light energy.</p>
+<p>Plants use carbon dioxide and water and produce glucose and oxygen.</p>
+<div class="example">Carbon dioxide + Water → Glucose + Oxygen</div>
+<p>Chlorophyll captures light energy for the process.</p>`,
+
+"Energy":`
+<p>Energy is the ability to do work.</p>
+<p>Common forms include heat, light, sound, electrical, chemical and mechanical energy.</p>
+<p>Energy can be transferred from one object or system to another and can change from one form to another.</p>`,
+
+"Matter":`
+<p>Matter is anything that has mass and occupies space.</p>
+<h3>States of Matter</h3>
+<ul>
+<li>Solid: has a definite shape and volume.</li>
+<li>Liquid: has a definite volume but takes the shape of its container.</li>
+<li>Gas: has no definite shape or volume.</li>
+</ul>
+<p>Heating and cooling can cause changes of state.</p>`,
+
+"Force":`
+<p>Force is a push or pull that can change the motion, direction or shape of an object.</p>
+<p>Forces can be balanced or unbalanced. An unbalanced force can cause a change in motion.</p>
+<div class="example">Pushing a stationary box can make it move.</div>`,
+
+"Electricity":`
+<p>Electricity involves electric charge and electrical energy.</p>
+<p>A simple circuit needs a source of electrical energy, conducting paths and suitable components.</p>
+<h3>Safety</h3>
+<p>Electricity can be dangerous. Damaged wires, wet hands and unsafe connections can result in electric shock or fire.</p>`,
+
+"Heat":`
+<p>Heat is energy transferred because of a temperature difference.</p>
+<p>Heat can be transferred through conduction, convection and radiation.</p>
+<p>Good conductors transfer heat easily, while insulators resist heat transfer.</p>`,
+
+"Environment":`
+<p>The environment includes living organisms and non-living factors around them.</p>
+<p>Air, water, soil, plants, animals and microorganisms are all parts of ecosystems.</p>
+<p>Pollution, deforestation and improper waste disposal can damage the environment.</p>
+<p>Environmental protection requires responsible use of natural resources.</>`
+}
+
+};
+
+
+/* =========================================================
+ADD SHORTER DETAILED LESSONS FOR REMAINING SUBJECTS
+========================================================= */
+
+const subjectConcepts={
+
+"Social Studies":{
+"Family":"Family is a social group whose members are connected through relationships such as birth, marriage or adoption. Families provide care, protection, education, support and socialisation.",
+"Culture":"Culture is the way of life of a people. It includes language, beliefs, customs, food, dressing, music, festivals and values.",
+"Socialisation":"Socialisation is the process through which people learn the values, rules and behaviours accepted by their society.",
+"Community":"A community is a group of people who live in the same area or share common interests and institutions.",
+"Leadership":"Leadership involves guiding people toward common goals. Good leaders should demonstrate responsibility, fairness and good judgement.",
+"Values":"Values are principles that help people decide what they consider right, important or desirable.",
+"Conflict":"Conflict occurs when people or groups disagree because of differences in interests, beliefs, goals or resources.",
+"Peace":"Peace is a condition of harmony and cooperation in which disputes are handled without violence.",
+"Population":"Population is the number of people living in a particular geographical area at a given time.",
+"Migration":"Migration is the movement of people from one location to another. It may be temporary or permanent.",
+"Transportation":"Transportation is the movement of people and goods from one place to another using road, rail, water or air.",
+"Communication":"Communication is the process of sending and receiving information, ideas and feelings.",
+"Globalisation":"Globalisation describes increasing connections among countries through trade, communication, technology, culture and movement of people."
+},
+
+"Computer Studies":{
+"Computer Basics":"A computer is an electronic machine that accepts data, processes it according to instructions, stores information and produces useful output.",
+"Computer Hardware":"Hardware means the physical components of a computer. Examples include the monitor, keyboard, mouse, processor and storage devices.",
+"Computer Software":"Software consists of programs and instructions that tell a computer what tasks to perform.",
+"Operating Systems":"An operating system manages computer hardware and provides an environment in which applications can run.",
+"Input Devices":"Input devices are used to enter data or instructions. Examples include keyboard, mouse, scanner, microphone and camera.",
+"Output Devices":"Output devices present processed information. Examples include monitor, printer, projector and speakers.",
+"Storage Devices":"Storage devices keep data for later use. Examples include hard disks, SSDs, flash drives and memory cards.",
+"Internet":"The internet is a worldwide network of interconnected computer networks used to exchange information and provide services.",
+"Cyber Safety":"Cyber safety means protecting devices, accounts and personal information when using digital technology.",
+"Programming":"Programming involves writing instructions in a programming language so a computer can perform tasks.",
+"Algorithms":"An algorithm is a clear sequence of steps for solving a problem or completing a task.",
+"Artificial Intelligence":"Artificial intelligence is a field of computing concerned with systems that can perform tasks involving abilities such as pattern recognition, language processing and decision-making.",
+"Computer Ethics":"Computer ethics deals with responsible and respectful behaviour when using computers, software and information."
+},
+
+"Basic Technology":{
+"Technology":"Technology is the practical application of knowledge, tools and processes to solve problems and satisfy human needs.",
+"Workshop Safety":"Workshop safety involves using tools correctly, wearing appropriate protective equipment and maintaining an orderly workspace.",
+"Tools":"Tools are implements designed to make specific tasks easier, such as cutting, measuring, joining or shaping materials.",
+"Woodwork":"Woodwork involves cutting, shaping, joining and finishing wood to create useful products.",
+"Metalwork":"Metalwork involves shaping, cutting, joining and finishing metals.",
+"Technical Drawing":"Technical drawing is a precise way of representing objects using lines, symbols, dimensions and standard conventions.",
+"Building":"Building involves planning and constructing structures such as houses, schools and offices.",
+"Electricity":"Electricity is a form of energy used to power machines, appliances and electronic systems.",
+"Electronics":"Electronics deals with circuits and components that control electrical signals.",
+"Machines":"Machines are devices that make work easier by changing the size or direction of forces.",
+"Energy":"Energy is required to operate machines and technological systems.",
+"Maintenance":"Maintenance involves caring for equipment through inspection, cleaning, servicing and repair.",
+"Technology and Society":"Technology influences education, transportation, communication, industry and daily life."
+},
+
+"Civic Education":{
+"Citizenship":"Citizenship is legal membership of a country. A citizen enjoys certain rights and is expected to perform duties and responsibilities.",
+"Rights":"Rights are freedoms and entitlements that individuals are expected to enjoy under law and accepted principles.",
+"Duties":"Duties are obligations citizens are expected to perform, such as obeying lawful rules.",
+"Responsibilities":"Responsibilities are tasks or obligations that people are expected to carry out properly.",
+"Democracy":"Democracy is government in which citizens participate directly or through representatives in making public decisions.",
+"Rule of Law":"The rule of law means that everyone is subject to the law and that laws should be applied fairly.",
+"Human Rights":"Human rights are basic freedoms and protections that belong to human beings.",
+"National Values":"National values include principles such as honesty, justice, tolerance, responsibility and respect.",
+"Leadership":"Leadership is the ability to guide people toward common goals through responsible decision-making.",
+"Political Participation":"Political participation involves lawful activities through which citizens take part in public affairs.",
+"Corruption":"Corruption involves dishonest or improper use of entrusted authority or resources for personal benefit.",
+"National Unity":"National unity means people from different ethnic, cultural or social groups cooperate as members of one nation.",
+"Good Governance":"Good governance involves accountability, transparency, participation, fairness and effective management."
+},
+
+"Christian Religious Studies":{
+"Creation":"The biblical creation account teaches that God is the creator of the universe and living things.",
+"The Fall of Man":"The Fall of Man describes humanity's disobedience to God's command and the consequences associated with that disobedience.",
+"Noah":"Noah is described in Genesis as a man who obeyed God and built an ark before the flood.",
+"Abraham":"Abraham is an important biblical figure associated with faith, obedience and God's covenant.",
+"Moses":"Moses led the Israelites from Egypt and played an important role in receiving and communicating God's law.",
+"David":"David was a king of Israel remembered for courage, leadership, faith and his relationship with God.",
+"The Prophets":"Prophets communicated messages from God and called people toward obedience, justice and faithful living.",
+"Birth of Jesus":"The New Testament describes the birth of Jesus and presents it as an important event in Christian belief.",
+"Teachings of Jesus":"Jesus taught love, forgiveness, humility, mercy, faith and care for others.",
+"Miracles":"The Gospels record miracles associated with Jesus, including acts of healing and demonstrations of authority.",
+"Death of Jesus":"The death of Jesus is a central event in Christian belief and is associated with his crucifixion.",
+"Resurrection":"The resurrection is the Christian belief that Jesus rose from the dead after his crucifixion.",
+"Christian Living":"Christian living involves applying values such as love, honesty, forgiveness, service and faith in everyday life."
+},
+
+"Islamic Religious Studies":{
+"Islam":"Islam is a religion based on submission to the will of Allah and guidance from the Quran and Sunnah.",
+"Articles of Faith":"The articles of faith include belief in Allah, angels, revealed books, messengers, the Last Day and divine decree.",
+"Five Pillars":"The five pillars are Shahadah, Salah, Zakat, Sawm and Hajj.",
+"Prayer":"Salah is the formal Islamic prayer performed at prescribed times each day.",
+"Fasting":"Sawm during Ramadan involves abstaining from food and drink from dawn to sunset together with spiritual discipline.",
+"Zakat":"Zakat is obligatory charitable giving for Muslims who meet the required conditions.",
+"Hajj":"Hajj is the pilgrimage to Makkah performed by Muslims who are physically and financially able.",
+"Prophet Muhammad":"Prophet Muhammad is regarded by Muslims as the final prophet and messenger of Allah.",
+"Quran":"The Quran is the central holy book of Islam and is regarded by Muslims as the word of Allah.",
+"Hadith":"Hadith are reports concerning the sayings, actions and approvals of Prophet Muhammad.",
+"Good Character":"Islam encourages honesty, patience, kindness, justice, respect and responsibility.",
+"Peace":"Islam teaches principles of peace, mercy, justice and peaceful coexistence.",
+"Islamic Brotherhood":"Islamic brotherhood emphasises unity, equality, mutual support and care among Muslims."
+},
+
+"Physical and Health Education":{
+"Physical Fitness":"Physical fitness is the ability of the body to perform physical activities effectively.",
+"Exercise":"Exercise is physical activity carried out to improve or maintain health and fitness.",
+"Athletics":"Athletics includes track and field events such as running, jumping and throwing.",
+"Football":"Football is a team sport in which players attempt to score goals while following established rules.",
+"Basketball":"Basketball is a team game in which players score by throwing a ball through a raised hoop.",
+"Volleyball":"Volleyball is played by teams separated by a net, with players attempting to ground the ball on the opponent's side.",
+"Gymnastics":"Gymnastics involves controlled movements requiring flexibility, balance, coordination and strength.",
+"Swimming":"Swimming involves moving through water using coordinated movements of the body and limbs.",
+"Nutrition":"Good nutrition provides the body with nutrients needed for energy, growth, repair and normal functions.",
+"Personal Hygiene":"Personal hygiene includes practices such as bathing, handwashing, dental care and wearing clean clothes.",
+"First Aid":"First aid is immediate basic assistance given to an injured or ill person before professional medical care.",
+"Safety":"Safety means identifying hazards and taking reasonable measures to prevent injury.",
+"Healthy Living":"Healthy living involves balanced nutrition, physical activity, rest, hygiene and responsible health choices."
+},
+
+"Creative Arts":{
+"Drawing":"Drawing involves creating images with lines, shapes, tones and marks.",
+"Painting":"Painting involves applying pigments or colours to a surface to create an image or design.",
+"Colour":"Colour is an element of art created through the way light is perceived.",
+"Design":"Design is the planned arrangement of visual elements to communicate an idea or create a useful product.",
+"Craft":"Craft involves producing objects by hand using materials and practical skills.",
+"Sculpture":"Sculpture is three-dimensional art created by carving, modelling, shaping or assembling materials.",
+"Drama":"Drama communicates stories or ideas through acting, speech, movement and performance.",
+"Music":"Music is organised sound involving elements such as rhythm, melody, harmony and dynamics.",
+"Dance":"Dance is expressive movement of the body, often performed with rhythm or music.",
+"Photography":"Photography is the creation of images by recording light using a camera or imaging device.",
+"Textiles":"Textiles are materials made from fibres and are commonly used for clothing and household products.",
+"Art Appreciation":"Art appreciation involves observing, understanding, interpreting and evaluating artworks.",
+"Nigerian Art":"Nigerian art includes traditional and contemporary artistic expressions from the country's many cultural communities."
+},
+
+"Agricultural Science":{
+"Agriculture":"Agriculture involves cultivating crops and rearing animals for food, materials and other purposes.",
+"Soil":"Soil is the upper layer of the earth in which plants grow. It contains minerals, organic matter, water and air.",
+"Soil Fertility":"Soil fertility is the ability of soil to supply plants with necessary nutrients in suitable amounts.",
+"Crops":"Crops are plants cultivated for food, fibre, medicine, industry and other purposes.",
+"Crop Production":"Crop production includes land preparation, planting, weeding, pest control, harvesting and storage.",
+"Pests":"Pests are organisms that damage crops, animals or agricultural products.",
+"Diseases":"Agricultural diseases are harmful conditions that reduce the health or productivity of crops or animals.",
+"Livestock":"Livestock are domesticated animals kept for products such as meat, milk, eggs, hides or labour.",
+"Animal Nutrition":"Animal nutrition involves providing livestock with appropriate nutrients, water and suitable feed.",
+"Animal Health":"Animal health involves proper feeding, hygiene, disease prevention and appropriate veterinary care.",
+"Farm Tools":"Farm tools are implements used to perform agricultural activities such as digging, cutting, planting and harvesting.",
+"Farm Management":"Farm management involves planning and controlling farm resources to achieve productive and economical results.",
+"Agricultural Marketing":"Agricultural marketing involves transporting, storing, processing and selling farm products to consumers."
+},
+
+"Home Economics":{
+"Home Economics":"Home Economics teaches knowledge and skills for effective management of family life, food, clothing, money and household resources.",
+"Food":"Food supplies nutrients and energy needed for body functions, growth and repair.",
+"Nutrition":"Nutrition involves obtaining and using nutrients from food for health and normal body functions.",
+"Meal Planning":"Meal planning involves deciding what meals to prepare while considering nutrition, resources, time and preferences.",
+"Cooking":"Cooking involves preparing food using methods such as boiling, steaming, baking, frying and grilling.",
+"Food Preservation":"Food preservation uses methods that slow food spoilage and extend storage life.",
+"Clothing":"Clothing protects the body, provides comfort and can express cultural identity.",
+"Textiles":"Textiles are materials made from fibres and used for clothing and household products.",
+"Sewing":"Sewing involves joining fabric using stitches made by hand or with a sewing machine.",
+"Home Management":"Home management involves using household resources such as money, time, energy and materials wisely.",
+"Consumer Education":"Consumer education helps people make informed decisions when buying goods and services.",
+"Child Development":"Child development involves physical, mental, emotional, social and language changes as children grow.",
+"Family Relationships":"Healthy family relationships depend on communication, respect, care, cooperation and responsibility."
+}
+
+};
+
+
+/* =========================================================
+CREATE LESSON
+========================================================= */
+
+function getLesson(subject,topic){
+
+    const key=subject+"|"+topic;
+
+    if(lessons[key]){
+        return lessons[key];
+    }
+
+    if(
+        detailedDefinitions[subject] &&
+        detailedDefinitions[subject][topic]
+    ){
+        return detailedDefinitions[subject][topic];
+    }
+
+    if(
+        subjectConcepts[subject] &&
+        subjectConcepts[subject][topic]
+    ){
+        return generateLongLesson(
+            subject,
+            topic,
+            subjectConcepts[subject][topic]
+        );
+    }
+
+    return generateLongLesson(
+        subject,
+        topic,
+        "This topic is an important part of the Basic 9 curriculum."
+    );
+}
+
+
+/* =========================================================
+LONG AUTOMATIC LESSON BUILDER
+========================================================= */
+
+function generateLongLesson(subject,topic,definition){
+
+return `
+
+<h3>Introduction</h3>
+
+<p>
+<strong>${topic}</strong> is an important topic in
+<strong>${subject}</strong>. Understanding this topic will help you
+build knowledge that can be used in classwork, examinations and everyday
+situations.
+</p>
+
+<p>
+The first thing to understand is the meaning of the topic. ${definition}
+</p>
+
+<h3>Understanding the Topic</h3>
+
+<p>
+When studying ${topic}, do not try to memorise every sentence without
+understanding it. Start with the meaning, identify the important ideas,
+and then connect those ideas with examples.
+</p>
+
+<p>
+A good learner should be able to explain the topic using simple words.
+If you can teach the idea to another learner without looking at your
+notes, it is a good indication that you understand it.
+</p>
+
+<h3>Important Points</h3>
+
+<ul>
+<li>Understand the definition of ${topic}.</li>
+<li>Learn the important terms connected with the topic.</li>
+<li>Understand examples related to the topic.</li>
+<li>Know why the topic is important.</li>
+<li>Practise answering questions about it.</li>
+</ul>
+
+<h3>Example</h3>
+
+<div class="example">
+
+<p>
+Imagine that your teacher asks you to explain
+<strong>${topic}</strong>.
+</p>
+
+<p>
+A good answer should begin with a clear definition, followed by important
+features, examples and, where appropriate, uses or applications.
+</p>
+
+</div>
+
+<h3>Why This Topic Is Important</h3>
+
+<p>
+Learning ${topic} helps you develop knowledge and skills in
+${subject}. It can also prepare you for more advanced topics in future
+classes.
+</p>
+
+<h3>How to Remember It</h3>
+
+<ol>
+<li>Read the definition carefully.</li>
+<li>Break the topic into smaller ideas.</li>
+<li>Write down important keywords.</li>
+<li>Study the examples.</li>
+<li>Practise questions without looking at your notes.</li>
+<li>Explain the topic aloud using your own words.</li>
+</ol>
+
+<h3>Common Mistake to Avoid</h3>
+
+<p>
+One common mistake learners make is memorising words without understanding
+their meaning. Instead, focus on understanding what the topic means and
+how the ideas are connected.
+</p>
+
+<div class="key-point">
+
+<strong>Key Point:</strong>
+
+If you understand the meaning, important features, examples and application
+of ${topic}, you will be in a much stronger position to answer examination
+questions about it.
+
+</div>
+
+<h3>Lesson Summary</h3>
+
+<p>
+In this lesson, we studied <strong>${topic}</strong> under
+<strong>${subject}</strong>. The main goal is to understand the topic,
+remember its important ideas and apply the knowledge when solving questions
+or explaining the subject to another person.
+</p>
+
+`;
+}
+
+
+/* =========================================================
+SCREEN TRANSITIONS
+========================================================= */
+
+let activeScreen="homeScreen";
+
+function showScreen(id){
+
+    if(id===activeScreen) return;
+
+    const oldScreen=document.getElementById(activeScreen);
+    const newScreen=document.getElementById(id);
+
+    oldScreen.classList.add("fade-out");
+
+    setTimeout(()=>{
+
+        oldScreen.classList.remove("active");
+        oldScreen.classList.remove("fade-out");
+
+        newScreen.classList.add("active");
+
+        activeScreen=id;
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    },250);
+}
+
+
+/* =========================================================
+HOME
+========================================================= */
+
+function showHome(){
+
+    if(activeScreen==="homeScreen"){
+
+        displaySubjects();
+        updateOverallProgress();
+        return;
+
+    }
+
+    document.getElementById("subjectSearch").value="";
+
+    displaySubjects();
+    updateOverallProgress();
+
+    showScreen("homeScreen");
+
+}
+
+
+function displaySubjects(){
+
+    const grid=document.getElementById("subjectGrid");
+
+    grid.innerHTML="";
+
+    Object.keys(subjects).forEach(subject=>{
+
+        const card=document.createElement("div");
+
+        card.className="subject-card";
+
+        card.innerHTML=`
+
+        <h3>${subject}</h3>
+
+        <p>
+        This subject contains
+        <strong>${subjects[subject].length}</strong>
+        detailed Basic 9 topics.
+        </p>
+
+        <button onclick="showSubject('${subject}')">
+        Open Subject
+        </button>
+
+        `;
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+function searchSubjects(){
+
+    const search=
+        document.getElementById("subjectSearch")
+        .value
+        .toLowerCase();
+
+    const grid=document.getElementById("subjectGrid");
+
+    grid.innerHTML="";
+
+    Object.keys(subjects).forEach(subject=>{
+
+        if(subject.toLowerCase().includes(search)){
+
+            const card=document.createElement("div");
+
+            card.className="subject-card";
+
+            card.innerHTML=`
+
+            <h3>${subject}</h3>
+
+            <p>
+            ${subjects[subject].length} topics available.
+            </p>
+
+            <button onclick="showSubject('${subject}')">
+            Open Subject
+            </button>
+
+            `;
+
+            grid.appendChild(card);
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+SUBJECT PAGE
+========================================================= */
+
+let currentSubject="";
+let currentLessonIndex=0;
+
+function showSubject(subject){
+
+    currentSubject=subject;
+
+    document.getElementById("subjectTitle")
+    .textContent=subject;
+
+    const list=document.getElementById("topicList");
+
+    list.innerHTML="";
+
+    subjects[subject].forEach((topic,index)=>{
+
+        const card=document.createElement("div");
+
+        card.className="topic-card";
+
+        if(isLessonCompleted(subject,topic)){
+            card.classList.add("completed");
+        }
+
+        card.innerHTML=`
+
+        <h3>${index+1}. ${topic}</h3>
+
+        <p>
+        ${getTopicDescription(subject,topic)}
+        </p>
+
+        ${
+            isLessonCompleted(subject,topic)
+            ? `<p class="success">✓ Completed</p>`
+            : ""
+        }
+
+        <button onclick="openLesson('${subject}',${index})">
+        Open Topic
+        </button>
+
+        `;
+
+        list.appendChild(card);
+
+    });
+
+    showScreen("subjectScreen");
+
+}
+
+
+function getTopicDescription(subject,topic){
+
+    const key=subject+"|"+topic;
+
+    let text="";
+
+    if(
+        detailedDefinitions[subject] &&
+        detailedDefinitions[subject][topic]
+    ){
+
+        text=detailedDefinitions[subject][topic];
+
+    }else if(
+        subjectConcepts[subject] &&
+        subjectConcepts[subject][topic]
+    ){
+
+        text=subjectConcepts[subject][topic];
+
+    }else if(lessons[key]){
+
+        text=lessons[key];
+
+    }
+
+    if(!text){
+
+        return `Learn the meaning, important ideas, examples and uses of ${topic}.`;
+
+    }
+
+    return stripHTML(text)
+        .replace(/\s+/g," ")
+        .substring(0,170)+"...";
+
+}
+
+
+/* =========================================================
+OPEN LESSON
+========================================================= */
+
+function openLesson(subject,index){
+
+    currentSubject=subject;
+    currentLessonIndex=index;
+
+    renderLesson();
+
+    showScreen("lessonScreen");
+
+}
+
+
+function renderLesson(){
+
+    const topic=
+        subjects[currentSubject][currentLessonIndex];
+
+    const lesson=
+        getLesson(currentSubject,topic);
+
+    const exercise=
+        createExercise(currentSubject,topic);
+
+    document.getElementById("lessonContainer").innerHTML=`
+
+    <h2>
+    ${currentSubject}: ${topic}
+    </h2>
+
+    <div class="info">
+    Lesson ${currentLessonIndex+1}
+    of ${subjects[currentSubject].length}
+    </div>
+
+    ${lesson}
+
+    <div class="exercise-box">
+
+        <h3>Practice Exercise</h3>
+
+        <p>
+        <strong>${exercise.question}</strong>
+        </p>
+
+        ${
+            exercise.type==="mcq"
+
+            ?
+
+            exercise.options.map((option,index)=>`
+
+            <label style="
+            display:block;
+            margin:12px 0;
+            line-height:1.5;
+            ">
+
+            <input
+            type="radio"
+            name="exerciseAnswer"
+            value="${index}"
+            style="width:auto;margin-right:8px;"
+            >
+
+            ${option}
+
+            </label>
+
+            `).join("")
+
+            :
+
+            `
+
+            <textarea
+            id="exerciseAnswer"
+            rows="7"
+            placeholder="Write your answer here..."
+            ></textarea>
+
+            `
+        }
+
+        <button onclick="checkAnswer()">
+        Check Answer
+        </button>
+
+        <div id="exerciseResult"
+        class="exercise-result"></div>
+
+    </div>
+
+    `;
+
+    updateLessonButtons();
+
+}
+
+
+function previousLesson(){
+
+    if(currentLessonIndex>0){
+
+        currentLessonIndex--;
+
+        renderLesson();
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    }
+
+}
+
+
+function nextLesson(){
+
+    if(
+        currentLessonIndex<
+        subjects[currentSubject].length-1
+    ){
+
+        currentLessonIndex++;
+
+        renderLesson();
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+    }
+
+}
+
+
+function updateLessonButtons(){
+
+    document.getElementById("previousBtn").disabled=
+        currentLessonIndex===0;
+
+    document.getElementById("nextBtn").disabled=
+        currentLessonIndex===
+        subjects[currentSubject].length-1;
+
+}
+
+
+function goBackToSubject(){
+
+    showSubject(currentSubject);
+
+}
+
+
+/* =========================================================
+EXERCISES
+========================================================= */
+
+let currentExercise=null;
+
+function createExercise(subject,topic){
+
+    const key=subject+"|"+topic;
+
+    const exerciseBank={
+
+        "Mathematics|Number Base System":{
+            type:"mcq",
+            question:"Convert 1011₂ to decimal.",
+            options:["9","10","11","12"],
+            answer:2
+        },
+
+        "Mathematics|Modular Arithmetic":{
+            type:"mcq",
+            question:"What is 29 mod 5?",
+            options:["3","4","5","6"],
+            answer:1
+        },
+
+        "Mathematics|Logarithms":{
+            type:"mcq",
+            question:"What is log₂16?",
+            options:["2","3","4","5"],
+            answer:2
+        },
+
+        "Mathematics|Sets":{
+            type:"mcq",
+            question:"If A={1,2,3} and B={3,4}, what is A ∩ B?",
+            options:[
+                "{1,2}",
+                "{3}",
+                "{1,2,3,4}",
+                "{4}"
+            ],
+            answer:1
+        },
+
+        "Mathematics|Quadratic Equations":{
+            type:"mcq",
+            question:"Which is a quadratic equation?",
+            options:[
+                "2x+3=0",
+                "x²+4x+3=0",
+                "x+1=2",
+                "5x=10"
+            ],
+            answer:1
+        },
+
+        "English Studies|Nouns":{
+            type:"mcq",
+            question:"Which word is a noun?",
+            options:[
+                "Quickly",
+                "Beautiful",
+                "Teacher",
+                "Run"
+            ],
+            answer:2
+        },
+
+        "English Studies|Verbs":{
+            type:"mcq",
+            question:"Which word is a verb?",
+            options:[
+                "Jump",
+                "Beautiful",
+                "House",
+                "Quick"
+            ],
+            answer:0
+        },
+
+        "Computer Studies|Algorithms":{
+            type:"mcq",
+            question:"What is an algorithm?",
+            options:[
+                "A computer screen",
+                "A step-by-step procedure for solving a problem",
+                "A storage device",
+                "A keyboard"
+            ],
+            answer:1
+        },
+
+        "Computer Studies|Artificial Intelligence":{
+            type:"mcq",
+            question:"Which statement best describes AI?",
+            options:[
+                "It is only used for printing",
+                "It involves computer systems performing tasks associated with aspects of intelligence",
+                "It is a type of keyboard",
+                "It is a storage device"
+            ],
+            answer:1
+        }
+
+    };
+
+    if(exerciseBank[key]){
+
+        currentExercise=exerciseBank[key];
+
+        return currentExercise;
+
+    }
+
+    currentExercise={
+        type:"text",
+        question:
+        `Explain ${topic} in your own words. Give at least three important points and one example.`
+    };
+
+    return currentExercise;
+
+}
+
+
+function checkAnswer(){
+
+    const result=
+        document.getElementById("exerciseResult");
+
+    if(!currentExercise) return;
+
+    if(currentExercise.type==="mcq"){
+
+        const selected=
+            document.querySelector(
+            'input[name="exerciseAnswer"]:checked'
+            );
+
+        if(!selected){
+
+            result.innerHTML=
+            `<p class="warning">
+            Please select an answer first.
+            </p>`;
+
+            return;
+
+        }
+
+        if(
+            Number(selected.value)===
+            currentExercise.answer
+        ){
+
+            result.innerHTML=
+            `<p class="success">
+            ✓ Correct! Excellent work.
+            </p>`;
+
+        }else{
+
+            result.innerHTML=
+            `<p class="warning">
+            That answer is not correct. Read the lesson again
+            and try to identify the correct answer.
+            </p>`;
+
+        }
+
+    }else{
+
+        const answer=
+            document.getElementById("exerciseAnswer")
+            .value.trim();
+
+        if(answer.length<30){
+
+            result.innerHTML=
+            `<p class="warning">
+            Your answer is too short. Explain the topic in more detail.
+            </p>`;
+
+            return;
+
+        }
+
+        result.innerHTML=
+        `<p class="success">
+        ✓ Good attempt. Compare your answer with the lesson
+        and check that you included the definition, important
+        points and an example.
+        </p>`;
+
+    }
+
+}
+
+
+/* =========================================================
+PROGRESS
+========================================================= */
+
+function progressKey(subject,topic){
+
+    return "basic9Progress|"+subject+"|"+topic;
+
+}
+
+
+function isLessonCompleted(subject,topic){
+
+    return localStorage.getItem(
+        progressKey(subject,topic)
+    )==="completed";
+
+}
+
+
+function completeLesson(){
+
+    const topic=
+        subjects[currentSubject][currentLessonIndex];
+
+    localStorage.setItem(
+        progressKey(currentSubject,topic),
+        "completed"
+    );
+
+    updateOverallProgress();
+
+    alert("✓ Lesson completed!");
+
+    showSubject(currentSubject);
+
+}
+
+
+function updateOverallProgress(){
+
+    let completed=0;
+
+    Object.keys(subjects).forEach(subject=>{
+
+        subjects[subject].forEach(topic=>{
+
+            if(isLessonCompleted(subject,topic)){
+                completed++;
+            }
+
+        });
+
+    });
+
+    const total=169;
+
+    const percentage=
+        Math.round((completed/total)*100);
+
+    document.getElementById("progressText")
+    .textContent=
+    `${completed} of ${total} lessons completed`;
+
+    const fill=
+        document.getElementById("progressFill");
+
+    fill.style.width=percentage+"%";
+
+    fill.textContent=percentage+"%";
+
+}
+
+
+/* =========================================================
+NAME
+========================================================= */
+
+function changeName(){
+
+    const oldName=
+        localStorage.getItem("basic9UserName") || "";
+
+    const name=
+        prompt(
+        "Enter your name:",
+        oldName
+        );
+
+    if(name && name.trim()){
+
+        localStorage.setItem(
+            "basic9UserName",
+            name.trim()
+        );
+
+        updateWelcome();
+
+    }
+
+}
+
+
+function updateWelcome(){
+
+    const name=
+        localStorage.getItem("basic9UserName");
+
+    document.getElementById("welcomeText")
+    .textContent=
+    name
+    ? `Welcome ${name} to Basic 9 AI Class`
+    : "Welcome to Basic 9 AI Class";
+
+}
+
+
+/* =========================================================
+DARK MODE
+========================================================= */
+
+function toggleDarkMode(){
+
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "basic9DarkMode",
+        document.body.classList.contains("dark")
+    );
+
+}
+
+
+/* =========================================================
+SELECT MENUS
+========================================================= */
+
+function fillSubjectSelects(){
+
+    [
+        "aiSubject",
+        "revisionSubject",
+        "examSubject"
+    ].forEach(id=>{
+
+        const select=
+            document.getElementById(id);
+
+        select.innerHTML="";
+
+        Object.keys(subjects).forEach(subject=>{
+
+            const option=
+                document.createElement("option");
+
+            option.value=subject;
+            option.textContent=subject;
+
+            select.appendChild(option);
+
+        });
+
+    });
+
+}
+
+
+/* =========================================================
+AI TEACHER
+========================================================= */
+
+function showAITeacher(){
+
+    showScreen("aiScreen");
+
+}
+
+
+function findTopic(subject,input){
+
+    if(!input) return null;
+
+    const search=input.toLowerCase().trim();
+
+    return subjects[subject].find(topic=>
+        topic.toLowerCase()===search
+    ) ||
+    subjects[subject].find(topic=>
+        topic.toLowerCase().includes(search)
+    );
+
+}
+
+
+function askAITeacher(){
+
+    const subject=
+        document.getElementById("aiSubject").value;
+
+    const input=
+        document.getElementById("aiTopic")
+        .value.trim();
+
+    const result=
+        document.getElementById("aiResult");
+
+    if(!input){
+
+        result.textContent=
+        "Please enter a topic.";
+
+        return;
+
+    }
+
+    const topic=
+        findTopic(subject,input);
+
+    if(!topic){
+
+        result.textContent=
+        `I could not find "${input}" under ${subject}.
+Please type a topic from the selected subject.`;
+
+        return;
+
+    }
+
+    result.textContent=
+`AI TEACHER
+
+SUBJECT: ${subject}
+
+TOPIC: ${topic}
+
+${stripHTML(getLesson(subject,topic))}
+
+HOW TO STUDY THIS TOPIC:
+
+1. Read the explanation carefully.
+2. Identify the definition.
+3. Learn the important points.
+4. Study the examples.
+5. Try the exercise.
+6. Explain the topic using your own words.
+
+Remember: understanding is more important than simply memorising words.`;
+
+}
+
+
+/* =========================================================
+REVISION
+========================================================= */
+
+function showRevision(){
+
+    showScreen("revisionScreen");
+
+}
+
+
+function startRevision(){
+
+    const subject=
+        document.getElementById("revisionSubject").value;
+
+    const input=
+        document.getElementById("revisionTopic")
+        .value.trim();
+
+    const result=
+        document.getElementById("revisionResult");
+
+    const topic=
+        findTopic(subject,input);
+
+    if(!topic){
+
+        result.textContent=
+        "Please enter a valid topic from the selected subject.";
+
+        return;
+
+    }
+
+    result.textContent=
+`REVISION NOTES
+
+SUBJECT: ${subject}
+
+TOPIC: ${topic}
+
+${stripHTML(getLesson(subject,topic))}
+
+QUICK REVISION:
+
+• Know the definition.
+• Know the main ideas.
+• Learn important examples.
+• Practise questions.
+• Try explaining the topic without looking at your notes.
+
+EXAM TIP:
+
+Read the question carefully. Identify exactly what the question is asking
+before you begin your answer.`;
+
+}
+
+
+/* =========================================================
+MOCK EXAM
+========================================================= */
+
+let examQuestions=[];
+let examIndex=0;
+let examScore=0;
+
+function showMockExam(){
+
+    showScreen("examScreen");
+
+}
+
+
+function startMockExam(){
+
+    const subject=
+        document.getElementById("examSubject").value;
+
+    examQuestions=[];
+    examIndex=0;
+    examScore=0;
+
+    const topics=subjects[subject];
+
+    for(let i=0;i<120;i++){
+
+        const topic=
+            topics[i%topics.length];
+
+        examQuestions.push({
+
+            topic:topic,
+
+            question:
+            `Question ${i+1}: Explain ${topic} clearly. Include important points, examples and, where appropriate, an application of the concept.`
+
+        });
+
+    }
+
+    displayMockQuestion();
+
+}
+
+
+function displayMockQuestion(){
+
+    const area=
+        document.getElementById("examArea");
+
+    if(examIndex>=examQuestions.length){
+
+        finishMockExam();
+
+        return;
+
+    }
+
+    const q=examQuestions[examIndex];
+
+    area.innerHTML=`
+
+    <div class="exam-question">
+
+    <h3>
+    Question ${examIndex+1} of 120
+    </h3>
+
+    <p>
+    ${q.question}
+    </p>
+
+    <textarea
+    id="examAnswer"
+    rows="9"
+    placeholder="Write your answer here..."
+    ></textarea>
+
+    <button onclick="submitMockAnswer()">
+    Submit Answer
+    </button>
+
+    </div>
+
+    `;
+
+}
+
+
+function submitMockAnswer(){
+
+    const answer=
+        document.getElementById("examAnswer")
+        .value.trim();
+
+    if(answer.length<30){
+
+        alert(
+        "Please give a fuller answer before continuing."
+        );
+
+        return;
+
+    }
+
+    examScore++;
+    examIndex++;
+
+    displayMockQuestion();
+
+}
+
+
+function finishMockExam(){
+
+    document.getElementById("examArea")
+    .innerHTML=`
+
+    <div class="score-box">
+
+    <h2>Mock Examination Completed</h2>
+
+    <p>
+    You submitted ${examScore} out of 120 questions.
+    </p>
+
+    <p>
+    This offline version checks whether an answer was submitted.
+    Written answers are not automatically graded for academic accuracy.
+    </p>
+
+    <button onclick="showMockExam()">
+    Take Another Exam
+    </button>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+RESET
+========================================================= */
+
+function resetWebsite(){
+
+    const answer=
+        confirm(
+        "Reset all saved name, progress, dark mode and first-visit information?"
+        );
+
+    if(!answer) return;
+
+    localStorage.clear();
+
+    document.body.classList.remove("dark");
+
+    updateWelcome();
+    updateOverallProgress();
+
+    alert("Website has been reset.");
+
+    showHome();
+
+}
+
+
+/* =========================================================
+FIRST VISIT
+========================================================= */
+
+function firstVisit(){
+
+    if(
+        !localStorage.getItem("basic9Visited")
+    ){
+
+        setTimeout(()=>{
+
+            alert(
+
+`WELCOME TO BASIC 9 AI CLASS!
+
+HOW TO USE THE WEBSITE
+
+1. Choose a subject.
+2. Click OPEN SUBJECT.
+3. Choose a topic.
+4. Read the full lesson.
+5. Study the examples.
+6. Complete the exercise.
+7. Click COMPLETE LESSON.
+8. Use NEXT LESSON to continue.
+9. Use AI TEACHER when you need another explanation.
+10. Use REVISION for quick revision.
+11. Use MOCK EXAM to practise.
+12. Your progress is saved automatically on this device.
+
+Enjoy your learning!`
+
+            );
+
+            localStorage.setItem(
+                "basic9Visited",
+                "true"
+            );
+
+        },700);
+
+    }
+
+}
+
+
+/* =========================================================
+REMOVE HTML
+========================================================= */
+
+function stripHTML(text){
+
+    const div=
+        document.createElement("div");
+
+    div.innerHTML=text;
+
+    return div.textContent ||
+           div.innerText ||
+           "";
+
+}
+
+
+/* =========================================================
+LOAD WEBSITE
+========================================================= */
+
+function loadWebsite(){
+
+    if(
+        localStorage.getItem("basic9DarkMode")
+        ==="true"
+    ){
+
+        document.body.classList.add("dark");
+
+    }
+
+    fillSubjectSelects();
+    displaySubjects();
+    updateWelcome();
+    updateOverallProgress();
+    firstVisit();
+
+}
+
+loadWebsite();
+
+</script>
+
+</body>
+</html>
